@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion';
 import { Typewriter } from 'react-simple-typewriter';
 import Image from 'next/image';
-import { FaGithub, FaLinkedin, FaTwitter } from 'react-icons/fa';
+import { FaGithub, FaLinkedin, FaDownload } from 'react-icons/fa';
 
 export default function Hero() {
   return (
@@ -51,12 +51,12 @@ export default function Hero() {
               </span>
             </motion.p>
 
-            {/* Social Links */}
+            {/* Social Links + Download Button */}
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1.2, delay: 1.2 }}
-              className="flex justify-center md:justify-start space-x-6 text-gray-700 dark:text-gray-300"
+              className="flex flex-wrap justify-center md:justify-start items-center gap-6 text-gray-700 dark:text-gray-300"
             >
               <a
                 href="https://github.com/gvnorln"
@@ -74,14 +74,18 @@ export default function Hero() {
               >
                 <FaLinkedin size={30} />
               </a>
-              {/* <a
-                href="https://twitter.com/GiovannOrlen"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-blue-600 dark:hover:text-blue-400 transition-all duration-300"
+              
+              {/* Download Resume Button */}
+              {/* <motion.a
+                href="/resume.pdf"
+                download
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
               >
-                <FaTwitter size={30} />
-              </a> */}
+                <FaDownload className="text-lg" />
+                <span className="font-medium">Download CV</span> */}
+              {/* </motion.a> */}
             </motion.div>
           </motion.div>
 

@@ -55,7 +55,7 @@ export default function Education() {
                   />
                 </div>
                 <p className="text-gray-600 dark:text-gray-300 font-medium">
-                  Current GPA: 3.60/4.00
+                  Current GPA: 3.63/4.00
                 </p>
               </div>
             </div>
