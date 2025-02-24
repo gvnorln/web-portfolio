@@ -15,7 +15,7 @@ const robotoMono = Roboto_Mono({
 });
 
 export const metadata = {
-  title: "Gvnorln",
+  title: "Gvnorln - Portfolio",
   description: "Website Portfolio",
 };
 
