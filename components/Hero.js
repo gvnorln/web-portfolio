@@ -2,8 +2,8 @@ import { motion } from "framer-motion";
 import { Typewriter } from "react-simple-typewriter";
 import Image from "next/image";
 import { FaGithub, FaLinkedin, FaArrowDown } from "react-icons/fa";
-import { useEffect, useState, useMemo } from "react";
 import { BsMouse } from "react-icons/bs";
+import { useMemo } from "react";
 
 export default function Hero() {
   const typewriterWords = useMemo(
@@ -11,23 +11,10 @@ export default function Hero() {
     []
   );
 
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768); // Jika kurang dari 768px, dianggap mobile
-    };
-
-    handleResize(); // Panggil saat pertama kali render
-    window.addEventListener("resize", handleResize); // Tambah event listener
-
-    return () => window.removeEventListener("resize", handleResize); // Cleanup
-  }, []);
-
   return (
     <section
       id="home"
-      className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b dark:from-gray-900 dark:to-gray-800 relative overflow-hidden px-4 sm:px-6 md:px-8 text-center sm:text-left pb-12 sm:pb-16"
+      className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b dark:from-gray-900 dark:to-gray-800 relative overflow-hidden px-4 sm:px-6 md:px-8 text-center pb-12 sm:pb-16"
     >
       {/* Background Gradient */}
       <motion.div
@@ -102,12 +89,12 @@ export default function Hero() {
           initial={{ opacity: 0, scale: 0.8, rotate: -5 }}
           animate={{ opacity: 1, scale: 1, rotate: 0 }}
           transition={{ type: "spring", stiffness: 60, damping: 18, delay: 0.8 }}
-          className="w-[80%] md:w-[40%] flex justify-center"
+          className="w-48 sm:w-56 md:w-64 lg:w-72 flex justify-center"
         >
           <motion.div
             whileHover={{ scale: 1.03, rotate: 3 }}
             transition={{ type: "spring", stiffness: 200, damping: 15 }}
-            className="relative rounded-full overflow-hidden border-4 border-white dark:border-gray-800 shadow-2xl w-48 h-48 md:w-64 md:h-64"
+            className="relative rounded-full overflow-hidden border-4 border-white dark:border-gray-800 shadow-2xl w-full aspect-square"
           >
             <Image
               src="/profile.jpeg"
@@ -119,21 +106,18 @@ export default function Hero() {
             />
           </motion.div>
         </motion.div>
-
-        {/* Scroll Icon (Mouse untuk Desktop, Arrow untuk Mobile) */}
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, ease: "easeOut", delay: 1.5 }}
-          className="absolute sm:bottom-11 bottom-11 inset-x-0 mx-auto w-fit flex flex-col items-center text-blue-500 dark:text-blue-400"
-        >
-          {isMobile ? (
-            <FaArrowDown size={32} className="animate-bounce" />
-          ) : (
-            <BsMouse size={32} className="animate-bounce" />
-          )}
-        </motion.div>
       </div>
+
+      {/* Scroll Icon */}
+      <motion.div
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1, ease: "easeOut", delay: 1.5 }}
+        className="absolute bottom-11 inset-x-0 mx-auto w-fit flex flex-col items-center text-blue-500 dark:text-blue-400"
+      >
+        <FaArrowDown size={32} className="animate-bounce sm:hidden" />
+        <BsMouse size={32} className="animate-bounce hidden sm:block" />
+      </motion.div>
     </section>
   );
 }
