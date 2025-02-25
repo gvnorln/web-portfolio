@@ -91,7 +91,7 @@ export default function Hero() {
               <FaGithub size={28} />
             </a>
             <a
-              href="https://linkedin.com/in/giovannorlen"
+              href="https://linkedin.com/in/giovanorlen"
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-blue-600 dark:hover:text-blue-400 transition-all duration-300"

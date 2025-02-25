@@ -1,9 +1,9 @@
 'use client';
 import { motion } from 'framer-motion';
 import { FaGithub } from 'react-icons/fa';
-import { SiReact, SiNextdotjs, SiTailwindcss, SiTypescript, SiMaterialdesign, SiPostgresql, SiVite, SiOpenstreetmap } from 'react-icons/si';
+import { SiReact, SiNextdotjs, SiTailwindcss, SiTypescript, SiMaterialdesign, SiPostgresql, SiVite, SiOpenstreetmap, SiExpress } from 'react-icons/si';
 import Image from 'next/image';
-import { useCallback, memo } from 'react';
+import { memo } from 'react';
 
 const techIcons = {
   React: <SiReact className="text-[#61DAFB]" />, 
@@ -13,14 +13,15 @@ const techIcons = {
   "Material UI": <SiMaterialdesign className="text-[#0081CB]" />, 
   PostgreSQL: <SiPostgresql className="text-[#4169E1]" />, 
   Vite: <SiVite className="text-[#646CFF]" />, 
-  "OpenWeather API": <SiOpenstreetmap className="text-[#EB6E4B]" />
+  "OpenWeather API": <SiOpenstreetmap className="text-[#EB6E4B]" />, 
+  Express: <SiExpress className="text-[#000000]" />
 };
 
 const projects = [
-  { title: "Dashboard App", description: "Admin dashboard dengan analitik lengkap menggunakan React, TypeScript, dan Recharts", tech: ["React", "TypeScript", "Tailwind CSS", "Material UI"], githubLink: "https://github.com/GrimmJow07/dashboard-admin.git", demoLink: "#", image: "/images/dashboard-preview.png" },
-  { title: "Employee Portal", description: "Sistem manajemen karyawan dengan Next.js dan PostgreSQL", tech: ["Next.js", "Tailwind CSS", "PostgreSQL"], githubLink: "https://github.com/gvnorln/forum-web", demoLink: "#", image: "/images/employee-portal-preview.png" },
-  { title: "Weather App", description: "Aplikasi prakiraan cuaca real-time dengan OpenWeather API", tech: ["React", "Tailwind CSS", "OpenWeather API"], githubLink: "https://github.com/gvnorln/weather-app-react", demoLink: "#", image: "/images/weather-app-preview.png" },
-  { title: "Typing Game", description: "Game tes kecepatan mengetik dengan level kesulitan berbeda", tech: ["React", "Tailwind CSS", "Vite"], githubLink: "https://github.com/gvnorln/typing-game-react", demoLink: "#", image: "/images/typing-game-preview.png" }
+  { title: "Dashboard App", description: "Admin dashboard with comprehensive analytics using React, TypeScript, and Recharts", tech: ["React", "TypeScript", "Tailwind CSS", "Material UI"], githubLink: "https://github.com/GrimmJow07/dashboard-admin.git", demoLink: "#", image: "/images/dashboard-preview.png" },
+  { title: "Employee Portal", description: "Employee management system using Express.Js, Next.js and PostgreSQL", tech: ["Next.js", "Tailwind CSS", "PostgreSQL", "Express"], githubLink: "https://github.com/gvnorln/forum-web", demoLink: "#", image: "/images/employee-portal-preview.png" },
+  { title: "Weather App", description: "Real-time weather forecast application using OpenWeather API", tech: ["React", "Tailwind CSS", "OpenWeather API"], githubLink: "https://github.com/gvnorln/weather-app-react", demoLink: "#", image: "/images/weather-app-preview.png" },
+  { title: "Typing Game", description: "Typing speed test game with different difficulty levels", tech: ["React", "Tailwind CSS", "Vite"], githubLink: "https://github.com/gvnorln/typing-game-react", demoLink: "#", image: "/images/typing-game-preview.png" }
 ];
 
 const projectVariants = {
