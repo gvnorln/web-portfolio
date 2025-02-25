@@ -45,8 +45,8 @@ export default function Navbar() {
   );
 
   return (
-    <nav className="fixed top-0 left-0 w-full flex justify-between items-center px-4 py-3 bg-white/50 dark:bg-gray-900/50 backdrop-blur-lg shadow-lg z-50 border-b border-gray-300 dark:border-gray-700">
-      <DarkModeButton darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
+    <nav className="fixed top-0 left-0 w-full flex justify-between items-center px-4 py-3 bg-transparent backdrop-blur-md shadow-lg z-50 border-b border-white/10 dark:border-gray-800/50 transition-all">
+    <DarkModeButton darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
 
       {/* Desktop Navigation */}
       <div className="hidden md:flex space-x-6">
@@ -57,7 +57,7 @@ export default function Navbar() {
             className="relative text-gray-700 dark:text-gray-300 group text-sm font-medium transition-all px-4 py-2"
           >
             <span className="relative z-10">{link.name}</span>
-            <div className="absolute inset-0 scale-x-0 group-hover:scale-x-75 transition-transform duration-300 bg-gradient-to-r from-blue-400 to-purple-500 opacity-30 rounded-lg" />
+            <div className="absolute inset-0 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 bg-gradient-to-r from-blue-400 to-purple-500 opacity-30 rounded-lg" />
           </Link>
         ))}
       </div>
