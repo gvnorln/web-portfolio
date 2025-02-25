@@ -1,47 +1,51 @@
-'use client';
-
-import dynamic from 'next/dynamic';
-import { useMemo } from 'react';
-import Image from 'next/image';
-import { FaGithub, FaLinkedin } from 'react-icons/fa';
-
-// Dynamic Import untuk Framer Motion & Typewriter
-const MotionSection = dynamic(() => import('framer-motion').then((mod) => mod.motion.section), { ssr: false });
-const MotionDiv = dynamic(() => import('framer-motion').then((mod) => mod.motion.div), { ssr: false });
-const Typewriter = dynamic(() => import('react-simple-typewriter').then((mod) => mod.Typewriter), { ssr: false });
+import { motion } from "framer-motion";
+import { Typewriter } from "react-simple-typewriter";
+import Image from "next/image";
+import { FaGithub, FaLinkedin, FaArrowDown } from "react-icons/fa";
+import { useEffect, useState, useMemo } from "react";
+import { BsMouse } from "react-icons/bs";
 
 export default function Hero() {
-  const typewriterWords = useMemo(() => ['Giovan Orlen', 'Fullstack Developer', 'DevOps Engineer'], []);
+  const typewriterWords = useMemo(
+    () => ["Giovan Orlen", "Fullstack Developer", "DevOps Engineer"],
+    []
+  );
+
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768); // Jika kurang dari 768px, dianggap mobile
+    };
+
+    handleResize(); // Panggil saat pertama kali render
+    window.addEventListener("resize", handleResize); // Tambah event listener
+
+    return () => window.removeEventListener("resize", handleResize); // Cleanup
+  }, []);
 
   return (
-    <MotionSection
+    <section
       id="home"
-      className="min-h-screen flex mb-10 items-center bg-gradient-to-b dark:from-gray-900 dark:to-gray-800 relative overflow-hidden md:pt-0"
-      initial={{ opacity: 0, y: 50 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, ease: 'easeOut' }}
-      viewport={{ once: true, amount: 0.3 }}
+      className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b dark:from-gray-900 dark:to-gray-800 relative overflow-hidden px-4 sm:px-6 md:px-8 text-center sm:text-left pb-12 sm:pb-16"
     >
       {/* Background Gradient */}
-      <MotionDiv
+      <motion.div
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
-        transition={{ duration: 1.5, ease: 'easeOut' }}
-        className="absolute -top-[500px] -left-[500px] w-[1000px] h-[1000px] bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-full blur-xl will-change-transform"
-        role="img"
-        aria-hidden="true"
+        transition={{ duration: 1.5, ease: "easeOut" }}
+        className="absolute -top-[500px] -left-[500px] w-[1000px] h-[1000px] bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-full blur-3xl"
       />
 
-      <div className="max-w-6xl mx-auto px-4 xl:px-0 flex flex-col md:flex-row items-center gap-12 md:gap-16 lg:gap-20 justify-between">
+      <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center gap-8 md:gap-12 lg:gap-16 justify-center">
         {/* Text Content */}
-        <MotionDiv
+        <motion.div
           initial={{ opacity: 0, x: -50 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          transition={{ type: 'spring', stiffness: 70, damping: 12 }}
-          viewport={{ once: true, amount: 0.3 }}
-          className="md:w-[55%] lg:w-[50%] text-center md:text-left relative z-10"
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 1, ease: "easeOut", delay: 0.3 }}
+          className="w-full md:w-[55%] relative z-10"
         >
-          <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-4 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+          <h1 className="text-3xl md:text-5xl font-bold mb-3 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
             <Typewriter
               words={typewriterWords}
               loop={0}
@@ -54,60 +58,82 @@ export default function Hero() {
             />
           </h1>
 
-          <MotionDiv
+          <motion.p
             initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: 'easeOut', delay: 0.3 }}
-            viewport={{ once: true, amount: 0.3 }}
-            className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-8 font-medium"
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut", delay: 0.6 }}
+            className="text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-6 font-medium"
           >
-            Turning <span className="text-blue-600 dark:text-blue-400">ideas</span> into{' '}
+            Turning{" "}
+            <span className="text-blue-600 dark:text-blue-400">ideas</span> into{" "}
             <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
               digital reality
             </span>
-          </MotionDiv>
+          </motion.p>
 
           {/* Social Links */}
-          <MotionDiv
+          <motion.div
             initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.5 }}
-            viewport={{ once: true, amount: 0.3 }}
-            className="flex justify-center md:justify-start items-center gap-6 text-gray-700 dark:text-gray-300"
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.2, delay: 1 }}
+            className="flex flex-wrap justify-center sm:justify-start items-center gap-4 text-gray-700 dark:text-gray-300"
           >
-            <a href="https://github.com/gvnorln" aria-label="GitHub Profile" target="_blank" rel="noopener noreferrer" className="hover:text-blue-600 dark:hover:text-blue-400 transition-all">
-              <FaGithub size={30} />
+            <a
+              href="https://github.com/gvnorln"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-blue-600 dark:hover:text-blue-400 transition-all duration-300"
+            >
+              <FaGithub size={28} />
             </a>
-            <a href="https://linkedin.com/in/giovannorlen" aria-label="LinkedIn Profile" target="_blank" rel="noopener noreferrer" className="hover:text-blue-600 dark:hover:text-blue-400 transition-all">
-              <FaLinkedin size={30} />
+            <a
+              href="https://linkedin.com/in/giovannorlen"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-blue-600 dark:hover:text-blue-400 transition-all duration-300"
+            >
+              <FaLinkedin size={28} />
             </a>
-          </MotionDiv>
-        </MotionDiv>
+          </motion.div>
+        </motion.div>
 
         {/* Profile Picture */}
-        <MotionDiv
+        <motion.div
           initial={{ opacity: 0, scale: 0.8, rotate: -5 }}
-          whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
-          transition={{ type: 'spring', stiffness: 60, damping: 18, delay: 0.3 }}
-          viewport={{ once: true, amount: 0.3 }}
-          className="md:w-[45%] lg:w-[40%] flex justify-center relative"
+          animate={{ opacity: 1, scale: 1, rotate: 0 }}
+          transition={{ type: "spring", stiffness: 60, damping: 18, delay: 0.8 }}
+          className="w-[80%] md:w-[40%] flex justify-center"
         >
-          <MotionDiv
+          <motion.div
             whileHover={{ scale: 1.03, rotate: 3 }}
-            transition={{ type: 'spring', stiffness: 200, damping: 15 }}
-            className="relative rounded-full overflow-hidden border-4 border-white dark:border-gray-800 shadow-2xl"
+            transition={{ type: "spring", stiffness: 200, damping: 15 }}
+            className="relative rounded-full overflow-hidden border-4 border-white dark:border-gray-800 shadow-2xl w-48 h-48 md:w-64 md:h-64"
           >
             <Image
               src="/profile.jpeg"
-              alt="Giovan Orlen's Profile Picture"
-              width={320}
-              height={320}
+              alt="Giovan Orlen"
+              width={256}
+              height={256}
               className="w-full h-full object-cover hover:scale-105 transition-transform"
               priority
             />
-          </MotionDiv>
-        </MotionDiv>
+          </motion.div>
+        </motion.div>
+
+        {/* Scroll Icon (Mouse untuk Desktop, Arrow untuk Mobile) */}
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, ease: "easeOut", delay: 1.5 }}
+          className="absolute sm:bottom-11 bottom-11 inset-x-0 mx-auto w-fit flex flex-col items-center text-blue-500 dark:text-blue-400"
+        >
+          {isMobile ? (
+            <FaArrowDown size={32} className="animate-bounce" />
+          ) : (
+            <BsMouse size={32} className="animate-bounce" />
+          )}
+        </motion.div>
       </div>
-    </MotionSection>
+    </section>
   );
 }
