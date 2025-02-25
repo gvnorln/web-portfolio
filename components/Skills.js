@@ -1,5 +1,5 @@
 'use client';
-import { memo, useMemo } from 'react';
+import { memo, useMemo, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { FaReact, FaNode, FaPython, FaDocker, FaVuejs, FaLinux } from 'react-icons/fa';
@@ -10,7 +10,7 @@ import {
 } from 'react-icons/si';
 
 const Skills = () => {
-  const { ref, inView } = useInView({ triggerOnce: false, threshold: 0.2 });
+  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.2 });
 
   const ICON_MAP = useMemo(() => ({
     React: <FaReact className="text-[#61DAFB]" aria-label="React" />,
@@ -50,9 +50,9 @@ const Skills = () => {
     <motion.section
       ref={ref}
       id="skills"
-      className="py-12 md:py-20 bg-gradient-to-b from-gray-50/50 to-white/50 dark:from-gray-900 dark:to-gray-800 backdrop-blur-lg"
-      initial={{ opacity: 0, scale: 0.9, y: 50 }}
-      animate={inView ? { opacity: 1, scale: 1, y: 0 } : { opacity: 0, scale: 0.95, y: 50 }}
+      className="py-12 md:py-20 bg-gradient-to-b from-gray-50/50 to-white/50 dark:from-gray-900 dark:to-gray-800"
+      initial={{ opacity: 0, y: 50 }}
+      animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
       transition={{ duration: 0.8 }}
     >
       <div className="max-w-6xl mx-auto px-4 xl:px-0">
@@ -77,27 +77,19 @@ const Skills = () => {
 
 const SkillCard = memo(({ skill, iconMap }) => (
   <motion.div
-    className="group relative bg-white/80 dark:bg-gray-800/80 p-6 rounded-2xl shadow-xl hover:shadow-2xl backdrop-blur-md border border-gray-100/20 dark:border-gray-700/50 transition-all duration-300 hover:-translate-y-2"
+    className="group relative bg-white/80 dark:bg-gray-800/80 p-6 rounded-2xl shadow-xl hover:shadow-2xl border border-gray-100/20 dark:border-gray-700/50 transition-all duration-300 hover:-translate-y-2"
     initial={{ opacity: 0, y: 20 }}
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true }}
     transition={{ duration: 0.5 }}
   >
     <div className={`absolute inset-0 bg-gradient-to-br ${skill.color} rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity -z-10`} />
-    
-    <h3 className="text-2xl font-bold mb-6 text-gray-800 dark:text-white text-center">
-      {skill.name}
-    </h3>
-    
+    <h3 className="text-2xl font-bold mb-6 text-gray-800 dark:text-white text-center">{skill.name}</h3>
     <div className="flex flex-wrap justify-center gap-3">
       {skill.tech.map((tech) => (
-        <div key={tech} className="px-3 py-2 bg-white/50 dark:bg-gray-700/50 rounded-xl flex items-center gap-2 text-sm font-medium border border-gray-100/30 dark:border-gray-600/50 backdrop-blur-sm hover:bg-white/80 dark:hover:bg-gray-600/80 transition-all hover:scale-105">
-          <span className="text-xl shrink-0">
-            {iconMap[tech]}
-          </span>
-          <span className="text-gray-700 dark:text-gray-300">
-            {tech}
-          </span>
+        <div key={tech} className="px-3 py-2 bg-white/50 dark:bg-gray-700/50 rounded-xl flex items-center gap-2 text-sm font-medium border border-gray-100/30 dark:border-gray-600/50 hover:bg-white/80 dark:hover:bg-gray-600/80 transition-all hover:scale-105">
+          <span className="text-xl shrink-0">{iconMap[tech]}</span>
+          <span className="text-gray-700 dark:text-gray-300">{tech}</span>
         </div>
       ))}
     </div>
