@@ -14,7 +14,7 @@ const InputField = ({ id, type, label, ...props }) => (
         placeholder=" "
         className="w-full px-4 py-3 md:px-5 md:py-4 text-sm md:text-base bg-white/50 dark:bg-gray-700/50 
           border-2 border-gray-200/30 dark:border-gray-600/50 rounded-lg md:rounded-xl focus:border-blue-500 focus:ring-0 
-          peer transition-all backdrop-blur-sm placeholder-transparent"
+          peer transition-all backdrop-blur-sm placeholder-transparent group-hover:border-blue-400 group-hover:shadow-md"
         required
         {...props}
       />
@@ -40,7 +40,7 @@ const TextAreaField = ({ id, label, ...props }) => (
         placeholder=" "
         className="w-full px-4 py-3 md:px-5 md:py-4 text-sm md:text-base bg-white/50 dark:bg-gray-700/50 
           border-2 border-gray-200/30 dark:border-gray-600/50 rounded-lg md:rounded-xl focus:border-blue-500 
-          focus:ring-0 peer transition-all backdrop-blur-sm resize-none placeholder-transparent"
+          focus:ring-0 peer transition-all backdrop-blur-sm resize-none placeholder-transparent group-hover:border-blue-400 group-hover:shadow-md"
         required
         {...props}
       />
@@ -61,11 +61,7 @@ const TextAreaField = ({ id, label, ...props }) => (
 export default function Contact() {
   const [state, handleSubmit] = useForm("xovjovrp");
   const isSubmitting = useMemo(() => state.submitting, [state.submitting]);
-
-  const { ref, inView } = useInView({
-    triggerOnce: false,
-    threshold: 0.2, // Section terlihat 20% baru muncul animasi
-  });
+  const { ref, inView } = useInView({ triggerOnce: false, threshold: 0.2 });
 
   return (
     <motion.section
@@ -86,15 +82,13 @@ export default function Contact() {
           Let's Connect
         </motion.h2>
 
-        <motion.div
-          className="max-w-2xl mx-auto bg-white/80 dark:bg-gray-800/80 p-6 md:p-8 lg:p-10 rounded-xl md:rounded-2xl shadow-lg md:shadow-2xl backdrop-blur-md border border-gray-100/20 dark:border-gray-700/50"
-        >
+        <motion.div className="max-w-2xl mx-auto bg-white/80 dark:bg-gray-800/80 p-6 md:p-8 lg:p-10 rounded-xl md:rounded-2xl shadow-lg md:shadow-2xl backdrop-blur-md border border-gray-100/20 dark:border-gray-700/50">
           <motion.form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
             <InputField id="email" type="email" label="Your Email" errors={state.errors} name="email" />
             <TextAreaField id="message" label="Your Message" errors={state.errors} name="message" />
 
             <motion.button
-              whileHover={{ scale: 1.05 }}
+              whileHover={{ scale: 1.05, boxShadow: "0px 0px 10px rgba(59, 130, 246, 0.5)" }}
               whileTap={{ scale: 0.95 }}
               transition={{ type: 'spring', stiffness: 200, damping: 15 }}
               type="submit"
@@ -106,22 +100,6 @@ export default function Contact() {
                 {isSubmitting ? 'Sending...' : 'Send Message'}
               </span>
             </motion.button>
-
-            {state.succeeded && (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.8, ease: 'easeInOut' }}
-                className="text-center mt-4 p-3 md:p-4 text-sm md:text-base bg-green-100/50 dark:bg-green-900/20 rounded-lg md:rounded-xl border border-green-200/30 dark:border-green-700/30 backdrop-blur-sm"
-              >
-                <div className="flex items-center justify-center gap-2 text-green-600 dark:text-green-400">
-                  <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                  <span>Message sent successfully!</span>
-                </div>
-              </motion.div>
-            )}
           </motion.form>
         </motion.div>
       </div>

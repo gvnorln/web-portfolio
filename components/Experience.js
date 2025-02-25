@@ -43,13 +43,13 @@ export default function Experience() {
           {experiences.map((exp, idx) => (
             <motion.div
               key={idx}
-              className="relative w-full max-w-3xl bg-white dark:bg-gray-800 rounded-xl p-6 md:p-8 shadow-md border border-gray-200 dark:border-gray-700 text-center"
+              className="relative w-full max-w-3xl bg-white dark:bg-gray-800 rounded-xl p-6 md:p-8 shadow-md border border-gray-200 dark:border-gray-700 text-center transition-all duration-300 hover:scale-[1.03] hover:shadow-lg hover:border-blue-400 dark:hover:border-cyan-500"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, ease: 'easeOut' }}
               viewport={{ once: true, amount: 0.3 }}
             >
-              <div className="relative w-24 h-24 md:w-32 md:h-32 mx-auto mb-6">
+              <div className="relative w-24 h-24 md:w-32 md:h-32 mx-auto mb-6 transform transition-all duration-300 hover:scale-110 hover:rotate-3">
                 <Image
                   src={exp.logo}
                   alt={exp.company}
@@ -70,13 +70,15 @@ export default function Experience() {
                 {exp.points.map((point, i) => (
                   <motion.li 
                     key={i}
-                    className="relative text-gray-700 dark:text-gray-300 text-base md:text-lg"
+                    className="relative text-gray-700 dark:text-gray-300 text-base md:text-lg group transition-all duration-300"
                     initial={{ opacity: 0, x: -10 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.3, ease: 'easeOut' }}
                   >
-                    <FiArrowUpRight className="inline-block mr-2 text-blue-600 dark:text-blue-400" />
-                    {point}
+                    <FiArrowUpRight className="inline-block mr-2 text-blue-600 dark:text-blue-400 transition-transform duration-300 group-hover:translate-x-1" />
+                    <span className="relative after:absolute after:left-0 after:bottom-[-2px] after:w-0 after:h-[2px] after:bg-blue-600 after:transition-all after:duration-300 group-hover:after:w-full">
+                      {point}
+                    </span>
                   </motion.li>
                 ))}
               </motion.ul>

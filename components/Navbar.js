@@ -1,5 +1,5 @@
 'use client';
-import { useState, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { FiSun, FiMoon, FiX, FiMenu } from 'react-icons/fi';
 import { motion } from 'framer-motion';
 import { useDarkMode } from '../context/DarkModeContext';
@@ -14,14 +14,13 @@ const navLinks = [
   { name: 'Contact', href: '#contact' },
 ];
 
-// Komponen Tombol Dark Mode untuk menghindari duplikasi
 function DarkModeButton({ darkMode, toggleDarkMode }) {
   return (
     <motion.button
-      whileHover={{ scale: 1.05 }}
-      whileTap={{ scale: 0.95 }}
+      whileHover={{ scale: 1.1 }}
+      whileTap={{ scale: 0.9 }}
       onClick={toggleDarkMode}
-      className="p-2 rounded-full bg-gray-100 dark:bg-gray-800 shadow-sm hover:shadow-md transition-all"
+      className="p-2 rounded-full bg-gray-200 dark:bg-gray-700 shadow-md hover:shadow-lg transition-all"
       aria-label="Toggle Dark Mode"
     >
       <motion.div animate={{ rotate: darkMode ? 360 : 0 }} transition={{ duration: 0.5 }}>
@@ -38,72 +37,74 @@ function DarkModeButton({ darkMode, toggleDarkMode }) {
 export default function Navbar() {
   const { darkMode, toggleDarkMode } = useDarkMode();
   const [isOpen, setIsOpen] = useState(false);
+  const [hidden, setHidden] = useState(false);
+  const [lastScrollY, setLastScrollY] = useState(0);
 
   const toggleMenu = useCallback(() => setIsOpen((prev) => !prev), []);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.innerWidth < 768) {
+        setHidden(window.scrollY > lastScrollY);
+      } else {
+        setHidden(false);
+      }
+      setLastScrollY(window.scrollY);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [lastScrollY]);
+
   return (
     <motion.nav
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ type: "spring", stiffness: 100 }}
-      className="fixed w-full bg-white/90 dark:bg-gray-900/90 backdrop-blur-lg shadow-sm z-50 border-b border-gray-100/30 dark:border-gray-800/50"
+      initial={{ x: 0 }}
+      animate={{ x: hidden ? '100%' : 0 }}
+      transition={{ duration: 0 }}
+      className="fixed top-4 left-1/2 transform -translate-x-1/2 w-auto px-8 py-3 bg-white/30 dark:bg-gray-900/50 backdrop-blur-3xl shadow-lg rounded-full z-50 border border-gray-200 dark:border-gray-700 flex items-center space-x-6 
+      md:top-4 md:left-1/2 md:-translate-x-1/2 md:px-4"
     >
-      <div className="max-w-6xl mx-auto px-4 xl:px-0">
-        <div className="flex justify-between items-center h-16">
-          {/* Logo */}
-          <motion.div whileHover={{ scale: 1.05 }}>
-            <Link 
-              href="/" 
-              className="text-2xl font-bold bg-gradient-to-r from-blue-600 via-purple-500 to-pink-500 bg-clip-text text-transparent"
-            >
-              PORTFOLIO
-            </Link>
-          </motion.div>
+      {/* Desktop Navigation */}
+      <div className="hidden md:flex items-center space-x-6">
+        {navLinks.map((link) => (
+          <Link
+            key={link.name}
+            href={link.href}
+            className="relative text-gray-700 dark:text-gray-300 group text-sm font-medium transition-all"
+          >
+            <span className="relative z-10">{link.name}</span>
+            <motion.div
+              className="absolute bottom-0 left-1/2 w-0 h-[2px] bg-blue-500 transition-all group-hover:w-full group-hover:left-0"
+              layoutId="underline"
+            />
+          </Link>
+        ))}
+      </div>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-8">
-            {navLinks.map((link) => (
-              <Link
-                key={link.name}
-                href={link.href}
-                className="relative text-gray-600 dark:text-gray-300 group text-sm font-medium"
-              >
-                <span className="relative z-10">{link.name}</span>
-                <motion.div
-                  className="absolute bottom-0 left-0 w-0 h-px bg-blue-500 transition-all group-hover:w-full"
-                />
-              </Link>
-            ))}
+      <DarkModeButton darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
 
-            <DarkModeButton darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
-          </div>
+      {/* Mobile Controls */}
+      <div className="md:hidden">
+        <motion.button
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          className="p-2 pr-9 text-gray-700 dark:text-gray-300"
+          onClick={toggleMenu}
+          aria-label="Toggle Menu"
+        >
+          {isOpen ? <FiX className="w-6 h-6" /> : <FiMenu className="w-6 h-6" />}
+        </motion.button>
+      </div>
 
-          {/* Mobile Controls */}
-          <div className="md:hidden flex items-center gap-4">
-            <DarkModeButton darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
-
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              className="p-2 text-gray-600 dark:text-gray-300"
-              onClick={toggleMenu}
-              aria-label="Toggle Menu"
-            >
-              {isOpen ? <FiX className="w-6 h-6" /> : <FiMenu className="w-6 h-6" />}
-            </motion.button>
-          </div>
-        </div>
-
-        {/* Mobile Menu */}
+      {/* Mobile Menu */}
+      {isOpen && (
         <motion.div
           initial={{ opacity: 0, y: -20 }}
-          animate={isOpen ? { opacity: 1, y: 0 } : { opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
-          className={`md:hidden absolute w-full left-0 bg-white dark:bg-gray-800 shadow-xl ${
-            isOpen ? 'block' : 'hidden'
-          }`}
+          className="absolute top-16 left-4 w-64 bg-white dark:bg-gray-900 rounded-lg shadow-xl"
         >
-          <div className="flex flex-col p-4 space-y-4">
+          <div className="flex flex-col p-6 space-y-4">
             {navLinks.map((link, index) => (
               <motion.div
                 key={link.name}
@@ -113,7 +114,7 @@ export default function Navbar() {
               >
                 <Link
                   href={link.href}
-                  className="block py-3 px-4 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+                  className="block py-3 px-4 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
                   onClick={toggleMenu}
                 >
                   {link.name}
@@ -122,7 +123,7 @@ export default function Navbar() {
             ))}
           </div>
         </motion.div>
-      </div>
+      )}
     </motion.nav>
   );
 }
