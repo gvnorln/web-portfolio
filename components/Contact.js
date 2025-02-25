@@ -3,12 +3,7 @@ import { motion } from 'framer-motion';
 import { useForm, ValidationError } from '@formspree/react';
 import { FiSend } from 'react-icons/fi';
 import { useMemo } from 'react';
-
-const animationVariants = {
-  initial: { opacity: 0, scale: 0.9 },
-  animate: { opacity: 1, scale: 1 },
-  transition: { duration: 0.8, type: 'spring', damping: 12 },
-};
+import { useInView } from 'react-intersection-observer';
 
 const InputField = ({ id, type, label, ...props }) => (
   <div>
@@ -67,25 +62,33 @@ export default function Contact() {
   const [state, handleSubmit] = useForm("xovjovrp");
   const isSubmitting = useMemo(() => state.submitting, [state.submitting]);
 
+  const { ref, inView } = useInView({
+    triggerOnce: false,
+    threshold: 0.2, // Section terlihat 20% baru muncul animasi
+  });
+
   return (
     <motion.section
+      ref={ref}
       id="contact"
       className="py-12 md:py-20 bg-gradient-to-b from-gray-50/50 to-white/50 dark:from-gray-900 dark:to-gray-800 backdrop-blur-lg"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={inView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.9 }}
       transition={{ duration: 0.8, ease: 'easeInOut' }}
     >
       <div className="max-w-6xl mx-auto px-4 xl:px-0">
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+          animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.6, ease: 'easeOut' }}
           className="text-3xl md:text-4xl lg:text-5xl font-bold mb-8 md:mb-12 text-center bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent"
         >
           Let's Connect
         </motion.h2>
 
-        <motion.div {...animationVariants} className="max-w-2xl mx-auto bg-white/80 dark:bg-gray-800/80 p-6 md:p-8 lg:p-10 rounded-xl md:rounded-2xl shadow-lg md:shadow-2xl backdrop-blur-md border border-gray-100/20 dark:border-gray-700/50">
+        <motion.div
+          className="max-w-2xl mx-auto bg-white/80 dark:bg-gray-800/80 p-6 md:p-8 lg:p-10 rounded-xl md:rounded-2xl shadow-lg md:shadow-2xl backdrop-blur-md border border-gray-100/20 dark:border-gray-700/50"
+        >
           <motion.form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
             <InputField id="email" type="email" label="Your Email" errors={state.errors} name="email" />
             <TextAreaField id="message" label="Your Message" errors={state.errors} name="message" />
@@ -105,7 +108,12 @@ export default function Contact() {
             </motion.button>
 
             {state.succeeded && (
-              <motion.div {...animationVariants} className="text-center mt-4 p-3 md:p-4 text-sm md:text-base bg-green-100/50 dark:bg-green-900/20 rounded-lg md:rounded-xl border border-green-200/30 dark:border-green-700/30 backdrop-blur-sm">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.8, ease: 'easeInOut' }}
+                className="text-center mt-4 p-3 md:p-4 text-sm md:text-base bg-green-100/50 dark:bg-green-900/20 rounded-lg md:rounded-xl border border-green-200/30 dark:border-green-700/30 backdrop-blur-sm"
+              >
                 <div className="flex items-center justify-center gap-2 text-green-600 dark:text-green-400">
                   <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />

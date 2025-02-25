@@ -1,82 +1,86 @@
-// components/Skills.js
 'use client';
 import { memo } from 'react';
 import { motion } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
+import { FaReact, FaNode, FaPython, FaDocker, FaVuejs, FaLinux } from 'react-icons/fa';
 import {
-  FaReact, FaNode, FaPython, FaDocker, FaVuejs, FaLinux
-} from 'react-icons/fa';
-import {
-  SiNextdotjs, SiTailwindcss, SiExpress, SiLaravel, SiMysql,
-  SiPostgresql, SiKubernetes, SiJenkins, SiAmazon as SiAws,
-  SiTerraform, SiAnsible, SiGithubactions as SiGithubActions,
+  SiNextdotjs, SiTailwindcss, SiExpress, SiLaravel, SiMysql, SiPostgresql, SiKubernetes,
+  SiJenkins, SiAmazon as SiAws, SiTerraform, SiAnsible, SiGithubactions as SiGithubActions,
   SiHtml5, SiCss3, SiBootstrap, SiSass, SiGo, SiMongodb
 } from 'react-icons/si';
 
-// Icon mapping (dipindahkan ke luar komponen untuk menghindari re-render)
 const ICON_MAP = {
-  React: <FaReact className="text-[#61DAFB]" />,
-  'Next.js': <SiNextdotjs className="text-black dark:text-white" />,
-  'Vue.js': <FaVuejs className="text-[#4FC08D]" />,
-  'Tailwind CSS': <SiTailwindcss className="text-[#06B6D4]" />,
-  HTML: <SiHtml5 className="text-[#E34F26]" />,
-  CSS: <SiCss3 className="text-[#1572B6]" />,
-  Bootstrap: <SiBootstrap className="text-[#7952B3]" />,
-  SCSS: <SiSass className="text-[#CC6699]" />,
-  'Node.js': <FaNode className="text-[#339933]" />,
-  'Express.js': <SiExpress className="text-[#000000] dark:text-[#FFFFFF]" />,
-  Laravel: <SiLaravel className="text-[#FF2D20]" />,
-  Python: <FaPython className="text-[#3776AB]" />,
-  Golang: <SiGo className="text-[#00ADD8]" />,
-  Docker: <FaDocker className="text-[#2496ED]" />,
-  Kubernetes: <SiKubernetes className="text-[#326CE5]" />,
-  Linux: <FaLinux className="text-[#FCC624]" />,
-  AWS: <SiAws className="text-[#FF9900]" />,
-  Terraform: <SiTerraform className="text-[#7B42BC]" />,
-  Ansible: <SiAnsible className="text-[#EE0000]" />,
-  Jenkins: <SiJenkins className="text-[#D24939]" />,
-  'GitHub Actions': <SiGithubActions className="text-[#2088FF]" />,
-  MySQL: <SiMysql className="text-[#4479A1]" />,
-  PostgreSQL: <SiPostgresql className="text-[#4169E1]" />,
-  MongoDB: <SiMongodb className="text-[#47A248]" />
-};
-
-// Variants untuk animasi framer-motion
-const fadeInUp = {
-  hidden: { opacity: 0, y: 30 },
-  visible: (i) => ({ opacity: 1, y: 0, transition: { duration: 0.5, delay: i * 0.15 } })
+  React: <FaReact className="text-[#61DAFB]" aria-label="React" />,
+  'Next.js': <SiNextdotjs className="text-black dark:text-white" aria-label="Next.js" />,
+  'Vue.js': <FaVuejs className="text-[#4FC08D]" aria-label="Vue.js" />,
+  'Tailwind CSS': <SiTailwindcss className="text-[#06B6D4]" aria-label="Tailwind CSS" />,
+  HTML: <SiHtml5 className="text-[#E34F26]" aria-label="HTML" />,
+  CSS: <SiCss3 className="text-[#1572B6]" aria-label="CSS" />,
+  Bootstrap: <SiBootstrap className="text-[#7952B3]" aria-label="Bootstrap" />,
+  SCSS: <SiSass className="text-[#CC6699]" aria-label="SCSS" />,
+  'Node.js': <FaNode className="text-[#339933]" aria-label="Node.js" />,
+  'Express.js': <SiExpress className="text-black dark:text-white" aria-label="Express.js" />,
+  Laravel: <SiLaravel className="text-[#FF2D20]" aria-label="Laravel" />,
+  Python: <FaPython className="text-[#3776AB]" aria-label="Python" />,
+  Golang: <SiGo className="text-[#00ADD8]" aria-label="Golang" />,
+  Docker: <FaDocker className="text-[#2496ED]" aria-label="Docker" />,
+  Kubernetes: <SiKubernetes className="text-[#326CE5]" aria-label="Kubernetes" />,
+  Linux: <FaLinux className="text-[#FCC624]" aria-label="Linux" />,
+  AWS: <SiAws className="text-[#FF9900]" aria-label="AWS" />,
+  Terraform: <SiTerraform className="text-[#7B42BC]" aria-label="Terraform" />,
+  Ansible: <SiAnsible className="text-[#EE0000]" aria-label="Ansible" />,
+  Jenkins: <SiJenkins className="text-[#D24939]" aria-label="Jenkins" />,
+  'GitHub Actions': <SiGithubActions className="text-[#2088FF]" aria-label="GitHub Actions" />,
+  MySQL: <SiMysql className="text-[#4479A1]" aria-label="MySQL" />,
+  PostgreSQL: <SiPostgresql className="text-[#4169E1]" aria-label="PostgreSQL" />,
+  MongoDB: <SiMongodb className="text-[#47A248]" aria-label="MongoDB" />
 };
 
 const skills = [
-  { 
-    name: 'Frontend', 
-    tech: ['React', 'Next.js', 'Vue.js', 'Tailwind CSS', 'HTML', 'CSS', 'Bootstrap', 'SCSS'],
-    color: 'from-purple-600/20 to-blue-500/20'
-  },
-  { 
-    name: 'Backend', 
-    tech: ['Node.js', 'Express.js', 'Laravel', 'Python', 'Golang'],
-    color: 'from-emerald-600/20 to-cyan-500/20'
-  },
-  { 
-    name: 'DevOps', 
-    tech: ['Docker', 'Kubernetes', 'Linux', 'AWS', 'Terraform', 'Ansible', 'Jenkins', 'GitHub Actions'],
-    color: 'from-orange-600/20 to-amber-500/20'
-  },
-  { 
-    name: 'Database', 
-    tech: ['MySQL', 'PostgreSQL', 'MongoDB'],
-    color: 'from-pink-600/20 to-rose-500/20'
-  }
+  { name: 'Frontend', tech: ['React', 'Next.js', 'Vue.js', 'Tailwind CSS', 'HTML', 'CSS', 'Bootstrap', 'SCSS'], color: 'from-purple-600/20 to-blue-500/20' },
+  { name: 'Backend', tech: ['Node.js', 'Express.js', 'Laravel', 'Python', 'Golang'], color: 'from-emerald-600/20 to-cyan-500/20' },
+  { name: 'DevOps', tech: ['Docker', 'Kubernetes', 'Linux', 'AWS', 'Terraform', 'Ansible', 'Jenkins', 'GitHub Actions'], color: 'from-orange-600/20 to-amber-500/20' },
+  { name: 'Database', tech: ['MySQL', 'PostgreSQL', 'MongoDB'], color: 'from-pink-600/20 to-rose-500/20' }
 ];
 
-// Komponen Skill Card
-const SkillCard = memo(({ skill, index }) => (
+const Skills = () => {
+  const { ref, inView } = useInView({ triggerOnce: false, threshold: 0.2 });
+
+  return (
+    <motion.section
+      ref={ref}
+      id="skills"
+      className="py-12 md:py-20 bg-gradient-to-b from-gray-50/50 to-white/50 dark:from-gray-900 dark:to-gray-800 backdrop-blur-lg"
+      initial={{ opacity: 0, scale: 0.9, y: 50 }}
+      animate={inView ? { opacity: 1, scale: 1, y: 0 } : { opacity: 0, scale: 0.95, y: 50 }}
+      transition={{ duration: 0.8 }}
+    >
+      <div className="max-w-6xl mx-auto px-4 xl:px-0">
+        <motion.h2
+          className="text-4xl font-bold mb-12 text-center bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent"
+          initial={{ opacity: 0, y: 20 }}
+          animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          transition={{ duration: 0.6 }}
+        >
+          Technical Expertise
+        </motion.h2>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {skills.map((skill) => (
+            <SkillCard key={skill.name} skill={skill} iconMap={ICON_MAP} inView={inView} />
+          ))}
+        </div>
+      </div>
+    </motion.section>
+  );
+};
+
+const SkillCard = memo(({ skill, iconMap, inView }) => (
   <motion.div
     className="group relative bg-white/80 dark:bg-gray-800/80 p-6 rounded-2xl shadow-xl hover:shadow-2xl backdrop-blur-md border border-gray-100/20 dark:border-gray-700/50 transition-all duration-300 hover:-translate-y-2"
-    variants={fadeInUp}
-    initial="hidden"
-    animate="visible"
-    custom={index}
+    initial={{ opacity: 0, y: 20 }}
+    animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+    transition={{ duration: 0.5 }}
   >
     <div className={`absolute inset-0 bg-gradient-to-br ${skill.color} rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity -z-10`} />
     
@@ -85,20 +89,15 @@ const SkillCard = memo(({ skill, index }) => (
     </h3>
     
     <div className="flex flex-wrap justify-center gap-3">
-      {skill.tech.map((tech, i) => (
-        <motion.div
-          key={i}
-          className="px-3 py-2 bg-white/50 dark:bg-gray-700/50 rounded-xl flex items-center gap-2 text-sm font-medium border border-gray-100/30 dark:border-gray-600/50 backdrop-blur-sm hover:bg-white/80 dark:hover:bg-gray-600/80 transition-all"
-          whileHover={{ scale: 1.05 }}
-          transition={{ type: "spring", stiffness: 300 }}
-        >
+      {skill.tech.map((tech) => (
+        <div key={tech} className="px-3 py-2 bg-white/50 dark:bg-gray-700/50 rounded-xl flex items-center gap-2 text-sm font-medium border border-gray-100/30 dark:border-gray-600/50 backdrop-blur-sm hover:bg-white/80 dark:hover:bg-gray-600/80 transition-all hover:scale-105">
           <span className="text-xl shrink-0">
-            {ICON_MAP[tech]}
+            {iconMap[tech]}
           </span>
           <span className="text-gray-700 dark:text-gray-300">
             {tech}
           </span>
-        </motion.div>
+        </div>
       ))}
     </div>
   </motion.div>
@@ -106,31 +105,4 @@ const SkillCard = memo(({ skill, index }) => (
 
 SkillCard.displayName = "SkillCard";
 
-export default function Skills() {
-  return (
-    <motion.section 
-      id="skills" 
-      className="py-12 md:py-20 bg-gradient-to-b from-gray-50/50 to-white/50 dark:from-gray-900 dark:to-gray-800 backdrop-blur-lg"
-      initial="hidden"
-      animate="visible"
-      variants={{ visible: { transition: { staggerChildren: 0.2 } } }}
-    >
-      <div className="max-w-6xl mx-auto px-4 xl:px-0">
-        <motion.h2 
-          className="text-4xl font-bold mb-12 text-center bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent"
-          variants={fadeInUp}
-          initial="hidden"
-          animate="visible"
-        >
-          Technical Expertise
-        </motion.h2>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {skills.map((skill, idx) => (
-            <SkillCard key={idx} skill={skill} index={idx} />
-          ))}
-        </div>
-      </div>
-    </motion.section>
-  );
-}
+export default Skills;
