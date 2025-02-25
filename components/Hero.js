@@ -1,16 +1,20 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import { Typewriter } from 'react-simple-typewriter';
+import dynamic from 'next/dynamic';
+import { useMemo } from 'react';
 import Image from 'next/image';
 import { FaGithub, FaLinkedin } from 'react-icons/fa';
-import { useMemo } from 'react';
+
+// Dynamic Import untuk Framer Motion & Typewriter
+const MotionSection = dynamic(() => import('framer-motion').then((mod) => mod.motion.section), { ssr: false });
+const MotionDiv = dynamic(() => import('framer-motion').then((mod) => mod.motion.div), { ssr: false });
+const Typewriter = dynamic(() => import('react-simple-typewriter').then((mod) => mod.Typewriter), { ssr: false });
 
 export default function Hero() {
   const typewriterWords = useMemo(() => ['Giovan Orlen', 'Fullstack Developer', 'DevOps Engineer'], []);
 
   return (
-    <motion.section
+    <MotionSection
       id="home"
       className="min-h-screen flex mb-10 items-center bg-gradient-to-b dark:from-gray-900 dark:to-gray-800 relative overflow-hidden md:pt-0"
       initial={{ opacity: 0, y: 50 }}
@@ -19,7 +23,7 @@ export default function Hero() {
       viewport={{ once: false, amount: 0.3 }}
     >
       {/* Background Gradient */}
-      <motion.div
+      <MotionDiv
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
         transition={{ duration: 1.5, ease: 'easeOut' }}
@@ -30,7 +34,7 @@ export default function Hero() {
 
       <div className="max-w-6xl mx-auto px-4 xl:px-0 flex flex-col md:flex-row items-center gap-12 md:gap-16 lg:gap-20 justify-between">
         {/* Text Content */}
-        <motion.div
+        <MotionDiv
           initial={{ opacity: 0, x: -50 }}
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ type: 'spring', stiffness: 70, damping: 12 }}
@@ -50,7 +54,7 @@ export default function Hero() {
             />
           </h1>
 
-          <motion.p
+          <MotionDiv
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: 'easeOut', delay: 0.3 }}
@@ -61,10 +65,10 @@ export default function Hero() {
             <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
               digital reality
             </span>
-          </motion.p>
+          </MotionDiv>
 
           {/* Social Links */}
-          <motion.div
+          <MotionDiv
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.5 }}
@@ -77,18 +81,18 @@ export default function Hero() {
             <a href="https://linkedin.com/in/giovannorlen" aria-label="LinkedIn Profile" target="_blank" rel="noopener noreferrer" className="hover:text-blue-600 dark:hover:text-blue-400 transition-all">
               <FaLinkedin size={30} />
             </a>
-          </motion.div>
-        </motion.div>
+          </MotionDiv>
+        </MotionDiv>
 
         {/* Profile Picture */}
-        <motion.div
+        <MotionDiv
           initial={{ opacity: 0, scale: 0.8, rotate: -5 }}
           whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
           transition={{ type: 'spring', stiffness: 60, damping: 18, delay: 0.3 }}
           viewport={{ once: false, amount: 0.3 }}
           className="md:w-[45%] lg:w-[40%] flex justify-center relative"
         >
-          <motion.div
+          <MotionDiv
             whileHover={{ scale: 1.03, rotate: 3 }}
             transition={{ type: 'spring', stiffness: 200, damping: 15 }}
             className="relative rounded-full overflow-hidden border-4 border-white dark:border-gray-800 shadow-2xl"
@@ -101,9 +105,9 @@ export default function Hero() {
               className="w-full h-full object-cover hover:scale-105 transition-transform"
               priority
             />
-          </motion.div>
-        </motion.div>
+          </MotionDiv>
+        </MotionDiv>
       </div>
-    </motion.section>
+    </MotionSection>
   );
 }

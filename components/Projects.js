@@ -6,13 +6,13 @@ import Image from 'next/image';
 import { useCallback } from 'react';
 
 const techIcons = {
-  "React": <SiReact className="text-[#61DAFB] hover:scale-110 transition-transform" />, 
+  React: <SiReact className="text-[#61DAFB] hover:scale-110 transition-transform" />, 
   "Next.js": <SiNextdotjs className="text-black dark:text-white hover:scale-110 transition-transform" />, 
   "Tailwind CSS": <SiTailwindcss className="text-[#06B6D4] hover:scale-110 transition-transform" />, 
-  "TypeScript": <SiTypescript className="text-[#3178C6] hover:scale-110 transition-transform" />, 
+  TypeScript: <SiTypescript className="text-[#3178C6] hover:scale-110 transition-transform" />, 
   "Material UI": <SiMaterialdesign className="text-[#0081CB] hover:scale-110 transition-transform" />, 
-  "PostgreSQL": <SiPostgresql className="text-[#4169E1] hover:scale-110 transition-transform" />, 
-  "Vite": <SiVite className="text-[#646CFF] hover:scale-110 transition-transform" />, 
+  PostgreSQL: <SiPostgresql className="text-[#4169E1] hover:scale-110 transition-transform" />, 
+  Vite: <SiVite className="text-[#646CFF] hover:scale-110 transition-transform" />, 
   "OpenWeather API": <SiOpenstreetmap className="text-[#EB6E4B] hover:scale-110 transition-transform" />
 };
 
@@ -27,7 +27,6 @@ export default function Projects() {
   const animationProps = useCallback((index) => ({
     initial: { opacity: 0, y: 50 },
     whileInView: { opacity: 1, y: 0 },
-    exit: { opacity: 0, y: -50 },
     transition: { duration: 0.5, delay: index * 0.1 },
     whileHover: { y: -10 }
   }), []);
@@ -38,14 +37,12 @@ export default function Projects() {
       className="py-12 md:py-20 bg-gradient-to-b from-gray-50/50 to-white/50 dark:from-gray-900 dark:to-gray-800 backdrop-blur-lg"
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
     >
       <div className="max-w-6xl mx-auto px-4 xl:px-0">
         <motion.h2 
           initial={{ opacity: 0, y: -20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
           transition={{ duration: 0.5 }}
           className="text-4xl font-bold mb-16 text-center bg-gradient-to-r from-blue-600 via-cyan-500 to-purple-500 bg-clip-text text-transparent"
         >
@@ -56,12 +53,24 @@ export default function Projects() {
             <motion.article 
               key={project.title} 
               {...animationProps(index)}
-              className="group relative bg-white/80 dark:bg-gray-800/80 rounded-2xl p-6 shadow-2xl hover:shadow-3xl transition-all duration-300 border border-gray-100/20 dark:border-gray-700/50 backdrop-blur-md"
+              className="group relative bg-white/80 dark:bg-gray-800/80 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all border border-gray-100/20 dark:border-gray-700/50 backdrop-blur-md"
             >
               <div className="relative w-full h-48 mb-6 rounded-xl overflow-hidden border border-gray-200/20 dark:border-gray-700/50">
-                <Image src={project.image} alt={`Preview tampilan ${project.title}`} fill sizes="(max-width: 768px) 100vw, 50vw" className="group-hover:scale-105 transition-transform duration-300 object-cover" placeholder="blur" blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==" quality={85} priority={index < 2} />
+                <Image 
+                  src={project.image} 
+                  alt={project.title} 
+                  fill 
+                  sizes="(max-width: 768px) 100vw, 50vw" 
+                  className="group-hover:scale-105 transition-transform object-cover" 
+                  placeholder="blur" 
+                  blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==" 
+                  quality={85} 
+                  priority={index < 2} 
+                />
               </div>
-              <h3 className="text-2xl font-bold mb-3 text-gray-800 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">{project.title}</h3>
+              <h3 className="text-2xl font-bold mb-3 text-gray-800 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                {project.title}
+              </h3>
               <p className="text-gray-600 dark:text-gray-300 mb-5">{project.description}</p>
               <div className="flex flex-wrap gap-2 mb-6">
                 {project.tech.map((tech, i) => (
@@ -71,7 +80,12 @@ export default function Projects() {
                   </span>
                 ))}
               </div>
-              <a href={project.githubLink} target="_blank" rel="noopener noreferrer" className="flex-1 px-6 py-2.5 bg-white/80 dark:bg-gray-700/80 text-gray-700 dark:text-gray-300 rounded-xl font-medium flex items-center justify-center gap-2 hover:bg-gray-100/80 dark:hover:bg-gray-600/80 hover:shadow-md transition-all">
+              <a 
+                href={project.githubLink} 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="flex-1 px-6 py-2.5 bg-white/80 dark:bg-gray-700/80 text-gray-700 dark:text-gray-300 rounded-xl font-medium flex items-center justify-center gap-2 hover:bg-gray-100/80 dark:hover:bg-gray-600/80 hover:shadow-md transition-all"
+              >
                 <FaGithub className="text-xl" />
                 <span>Source</span>
               </a>
