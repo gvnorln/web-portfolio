@@ -1,10 +1,23 @@
 'use client';
-import { memo, useMemo } from 'react';
-import { motion } from 'framer-motion';
-import { useInView } from 'react-intersection-observer';
-import { FaUniversity, FaGraduationCap } from 'react-icons/fa';
-import { FiCode, FiDatabase, FiBookOpen, FiGlobe, FiServer } from 'react-icons/fi';
 
+import { memo } from 'react';
+import { motion } from 'framer-motion';
+import {
+  FaUniversity,
+  FaGraduationCap,
+  FaShieldAlt,
+  FaGithub
+} from 'react-icons/fa';
+import {
+  FiCode,
+  FiDatabase,
+  FiBookOpen,
+  FiGlobe,
+  FiServer,
+  FiLock
+} from 'react-icons/fi';
+
+/* ===================== DATA ===================== */
 const courses = [
   { name: 'Algorithms & Programming', icon: FiCode },
   { name: 'Database Systems', icon: FiDatabase },
@@ -13,83 +26,176 @@ const courses = [
   { name: 'Cloud Computing', icon: FiServer },
 ];
 
+/* ===================== COURSE CARD ===================== */
 const CourseItem = memo(({ name, Icon }) => (
   <motion.div
-    whileHover={{ scale: 1.05 }}
-    className="p-4 bg-white/80 dark:bg-gray-800/80 rounded-xl border border-gray-200 dark:border-gray-600 shadow-md transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:bg-gradient-to-br from-blue-100 to-white/60 dark:from-gray-700 dark:to-gray-900"
+    whileHover={{ y: -4 }}
+    transition={{ duration: 0.2, ease: 'easeOut' }}
+    className="
+      group p-4 rounded-xl bg-white dark:bg-gray-800
+      border border-gray-200 dark:border-gray-700
+      shadow-sm hover:shadow-lg
+      will-change-transform
+    "
   >
-    <div className="text-blue-600 dark:text-blue-400 text-3xl mb-3 flex justify-center">
-      <Icon aria-label={name} />
+    <div className="flex flex-col items-center text-center">
+      <Icon className="text-3xl mb-3 text-blue-600 dark:text-blue-400 transition-transform duration-300 group-hover:scale-110" />
+      <span className="text-sm font-medium text-gray-800 dark:text-gray-200">
+        {name}
+      </span>
     </div>
-    <span className="text-sm font-medium text-gray-800 dark:text-gray-200 text-center block">{name}</span>
   </motion.div>
 ));
 
-const sectionVariants = {
-  hidden: { opacity: 0, y: 50 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: 'easeInOut' } }
-};
+/* ===================== MAIN ===================== */
+const Education = memo(() => (
+  <section
+    id="education"
+    className="py-24 bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-950"
+  >
+    <div className="max-w-6xl mx-auto px-6">
+      {/* Title */}
+      <h2 className="text-3xl md:text-4xl font-extrabold text-center mb-16 bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent">
+        Academic Education
+      </h2>
 
-export default function Education() {
-  const { ref, inView } = useInView({ threshold: 0.2, triggerOnce: false });
-  const courseList = useMemo(() => courses, []);
-
-  return (
-    <motion.section
-      ref={ref}
-      id="education"
-      className="min-h-screen flex flex-col justify-center items-center py-12 px-4 bg-gray-50 dark:bg-gray-900"
-      initial="hidden"
-      animate={inView ? 'visible' : 'hidden'}
-      variants={sectionVariants}
-    >
-      <div className="max-w-6xl w-full px-4 sm:px-6">
-        <motion.h2
-          initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          transition={{ duration: 0.6, ease: 'easeOut' }}
-          className="text-2xl sm:text-3xl font-bold mb-8 text-center text-gray-900 dark:text-white"
+      {/* ===================== EDUCATION CARD ===================== */}
+      <div className="flex justify-center mb-20">
+        <div
+          className="
+            w-full max-w-4xl rounded-3xl
+            bg-white/90 dark:bg-gray-900/90
+            backdrop-blur
+            border border-gray-200 dark:border-gray-700
+            shadow-xl p-8 md:p-10
+          "
         >
-          Academic Education
-        </motion.h2>
+          {/* Header */}
+          <div className="text-center mb-10">
+            <FaUniversity className="mx-auto text-4xl text-blue-600 dark:text-blue-400 mb-4" />
 
-        <div className="flex justify-center">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9, y: 20 }}
-            animate={inView ? { opacity: 1, scale: 1, y: 0 } : { opacity: 0, scale: 0.9, y: 20 }}
-            transition={{ duration: 0.8, type: 'spring', damping: 12 }}
-            className="relative bg-white dark:bg-gray-800 rounded-2xl p-6 sm:p-8 w-full max-w-4xl shadow-lg border border-gray-200 dark:border-gray-700"
-          >
-            <div className="text-center mb-6 sm:mb-8">
-              <div className="flex flex-col items-center mb-4 sm:mb-6">
-                <FaUniversity className="text-3xl sm:text-4xl text-blue-600 dark:text-blue-400 mb-3 sm:mb-4" />
-                <h3 className="text-xl sm:text-2xl font-bold text-gray-800 dark:text-white">Krisnadwipayana University</h3>
-                <p className="text-base sm:text-lg text-cyan-600 dark:text-cyan-400 flex items-center gap-2 mt-2 text-center">
-                  <FaGraduationCap className="inline text-xl sm:text-2xl" /> <span>Faculty of Informatics Engineering</span>
-                </p>
-              </div>
-              <div className="flex flex-col items-center space-y-3 sm:space-y-4">
-                <span className="bg-blue-600 text-white px-4 py-2 rounded-full text-xs sm:text-sm">2021 - Present</span>
-                <div className="w-full max-w-xs bg-gray-300 dark:bg-gray-700 rounded-full h-2 sm:h-3">
-                  <div className="bg-blue-600 h-full rounded-full" style={{ width: '90%' }} />
-                </div>
-                <p className="text-gray-600 dark:text-gray-300 text-sm sm:text-base font-medium">Current GPA: 3.63/4.00</p>
-              </div>
-            </div>
+            <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
+              Krisnadwipayana University
+            </h3>
 
-            <div className="mt-6 sm:mt-8">
-              <h4 className="text-lg sm:text-xl font-medium text-gray-700 dark:text-gray-200 mb-4 sm:mb-6 text-center flex items-center justify-center gap-2">
-                <FiBookOpen className="text-lg sm:text-xl" /> Relevant Courses
-              </h4>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
-                {courseList.map((course, i) => (
-                  <CourseItem key={i} name={course.name} Icon={course.icon} />
-                ))}
+            <p className="mt-2 flex justify-center items-center gap-2 text-cyan-600 dark:text-cyan-400 font-medium">
+              <FaGraduationCap />
+              Faculty of Informatics Engineering
+            </p>
+
+            <div className="mt-6 flex flex-col items-center gap-3">
+              <span className="px-4 py-1.5 rounded-full text-xs font-semibold bg-blue-600 text-white">
+                2021 — Present
+              </span>
+
+              {/* Progress */}
+              <div className="w-64 h-2 rounded-full bg-gray-200 dark:bg-gray-700 overflow-hidden">
+                <div className="h-full w-[90%] bg-gradient-to-r from-blue-600 to-cyan-500 rounded-full" />
               </div>
+
+              <p className="text-sm font-medium text-gray-600 dark:text-gray-300">
+                Current GPA: <span className="font-semibold">3.63 / 4.00</span>
+              </p>
             </div>
-          </motion.div>
+          </div>
+
+          {/* Courses */}
+          <div>
+            <h4 className="flex items-center justify-center gap-2 text-lg font-semibold text-gray-800 dark:text-gray-200 mb-6">
+              <FiBookOpen />
+              Relevant Courses
+            </h4>
+
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+              {courses.map((c) => (
+                <CourseItem key={c.name} name={c.name} Icon={c.icon} />
+              ))}
+            </div>
+          </div>
         </div>
       </div>
-    </motion.section>
-  );
-}
+
+      {/* ===================== THESIS SECTION ===================== */}
+      <div className="flex justify-center">
+        <motion.div
+          whileHover={{ y: -4 }}
+          transition={{ duration: 0.25, ease: 'easeOut' }}
+          className="
+            w-full max-w-4xl rounded-3xl
+            bg-gradient-to-br from-blue-600/90 to-cyan-500/90
+            text-white
+            shadow-2xl p-8 md:p-10
+            will-change-transform
+          "
+        >
+          {/* Header */}
+          <div className="flex items-center gap-3 mb-6">
+            <FaShieldAlt className="text-3xl" />
+            <h3 className="text-2xl font-bold">
+              Final Project / Thesis
+            </h3>
+          </div>
+
+          <h4 className="text-xl font-semibold mb-3">
+            Implementation of Dynamic Secrets for Securing Kubernetes CI/CD Pipelines
+          </h4>
+
+          <p className="text-white/90 leading-relaxed mb-6">
+            This research focuses on improving CI/CD pipeline security by
+            implementing <strong>Dynamic Secrets</strong> using
+            <strong> HashiCorp Vault</strong>, integrated with
+            <strong> GitHub Actions</strong> and <strong>Kubernetes</strong>.
+            The solution eliminates the risk of static credential leakage
+            through short-lived, TTL-based secrets obtained via OIDC authentication.
+          </p>
+
+          {/* Highlights */}
+          <div className="grid sm:grid-cols-2 gap-4 mb-6">
+            <div className="flex gap-3 items-start">
+              <FiLock className="text-xl shrink-0" />
+              <p className="text-sm">
+                <strong>0% secrets leakage</strong> detected using Gitleaks & Git-Secrets
+              </p>
+            </div>
+            <div className="flex gap-3 items-start">
+              <FiServer className="text-xl shrink-0" />
+              <p className="text-sm">
+                Automatic credential rotation in <strong>~74ms</strong> (Vault TTL-based)
+              </p>
+            </div>
+            <div className="flex gap-3 items-start">
+              <FiCode className="text-xl shrink-0" />
+              <p className="text-sm">
+                Secure CI/CD authentication via <strong>GitHub OIDC</strong>
+              </p>
+            </div>
+            <div className="flex gap-3 items-start">
+              <FiBookOpen className="text-xl shrink-0" />
+              <p className="text-sm">
+                <strong>100% compliance</strong> with NIST SP 800-171
+              </p>
+            </div>
+          </div>
+
+          {/* Action */}
+          <a
+            href="https://github.com/gvnorln/vault-secrets-research.git"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="
+              inline-flex items-center gap-2
+              px-5 py-3 rounded-xl
+              bg-white text-blue-700 font-semibold
+              hover:bg-gray-100 transition
+            "
+          >
+            <FaGithub />
+            View Project Details
+          </a>
+        </motion.div>
+      </div>
+    </div>
+  </section>
+));
+
+export default Education;
