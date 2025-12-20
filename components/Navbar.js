@@ -1,8 +1,9 @@
 'use client';
-import { useState, useCallback, useMemo } from 'react';
-import { FiSun, FiMoon, FiX, FiMenu } from 'react-icons/fi';
+
+import { useState, useCallback } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { FiSun, FiMoon, FiMenu, FiX } from 'react-icons/fi';
 import { useDarkMode } from '../context/DarkModeContext';
-import Link from 'next/link';
 
 const navLinks = [
   { name: 'Home', href: '#home' },
@@ -13,76 +14,210 @@ const navLinks = [
   { name: 'Contact', href: '#contact' },
 ];
 
-const DarkModeButton = ({ darkMode, toggleDarkMode }) => (
-  <button
-    onClick={toggleDarkMode}
-    className="p-2 rounded-full bg-gray-200 dark:bg-gray-700 shadow-md hover:shadow-lg transition-all"
-    aria-label="Toggle Dark Mode"
-  >
-    {darkMode ? <FiSun className="w-6 h-6 text-amber-400" /> : <FiMoon className="w-6 h-6 text-gray-600 dark:text-gray-300" />}
-  </button>
-);
-
 export default function Navbar() {
   const { darkMode, toggleDarkMode } = useDarkMode();
-  const [isOpen, setIsOpen] = useState(false);
+  const [open, setOpen] = useState(false);
 
-  const toggleMenu = useCallback(() => setIsOpen((prev) => !prev), []);
-  const menuItems = useMemo(
-    () =>
-      navLinks.map((link) => (
-        <div key={link.name}>
-          <Link
-            href={link.href}
-            className="block py-3 px-4 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
-            onClick={toggleMenu}
-          >
-            {link.name}
-          </Link>
-        </div>
-      )),
-    [toggleMenu]
-  );
+  const toggleMenu = useCallback(() => {
+    setOpen((prev) => !prev);
+  }, []);
+
+  const handleScroll = useCallback((e, targetId) => {
+    e.preventDefault();
+    const el = document.querySelector(targetId);
+    if (!el) return;
+
+    const navbarOffset = 80;
+    const y =
+      el.getBoundingClientRect().top +
+      window.pageYOffset -
+      navbarOffset;
+
+    window.scrollTo({ top: y, behavior: 'smooth' });
+    setOpen(false);
+  }, []);
 
   return (
-    <nav className="fixed top-0 left-0 w-full flex justify-between items-center px-4 py-3 bg-transparent backdrop-blur-md shadow-lg z-50 border-b border-white/10 dark:border-gray-800/50 transition-all">
-    <DarkModeButton darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
-
-      {/* Desktop Navigation */}
-      <div className="hidden md:flex space-x-6">
-        {navLinks.map((link) => (
-          <Link
-            key={link.name}
-            href={link.href}
-            className="relative text-gray-700 dark:text-gray-300 group text-sm font-medium transition-all px-4 py-2"
+    <>
+      <header className="fixed top-0 left-0 z-50 w-full">
+        {/* ===== MOBILE BAR ===== */}
+        <div className="md:hidden h-14 px-4 flex items-center justify-between
+          backdrop-blur-md bg-white/80 dark:bg-neutral-950/80
+          border-b border-neutral-200/60 dark:border-neutral-800
+        ">
+          <a
+            href="#home"
+            onClick={(e) => handleScroll(e, '#home')}
+            className="text-sm font-bold text-neutral-900 dark:text-neutral-100"
           >
-            <span className="relative z-10">{link.name}</span>
-            <div className="absolute inset-0 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 bg-gradient-to-r from-blue-400 to-purple-500 opacity-30 rounded-lg" />
-          </Link>
-        ))}
-      </div>
+            Giovan
+          </a>
 
-      {/* Mobile Controls */}
-      <div className="md:hidden">
-        <button className="p-2 text-gray-700 dark:text-gray-300" onClick={toggleMenu} aria-label="Toggle Menu">
-          {isOpen ? <FiX className="w-6 h-6" /> : <FiMenu className="w-6 h-6" />}
-        </button>
-      </div>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={toggleDarkMode}
+              className="p-2 rounded-full text-neutral-600 dark:text-neutral-300
+                hover:bg-neutral-200/60 dark:hover:bg-neutral-800 transition"
+            >
+              {darkMode ? <FiSun size={16} /> : <FiMoon size={16} />}
+            </button>
 
-      {/* Mobile Fullscreen Menu */}
-      {isOpen && (
-        <div className="fixed top-0 right-0 h-screen w-3/4 sm:w-1/2 bg-white dark:bg-gray-900 shadow-lg z-50">
-          <div className="flex flex-col h-full p-6">
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-lg font-semibold text-gray-700 dark:text-gray-300">Menu</h2>
-              <button className="p-2 text-gray-700 dark:text-gray-300" onClick={toggleMenu} aria-label="Close Menu">
-                <FiX className="w-6 h-6" />
-              </button>
-            </div>
-            <div className="flex flex-col space-y-4">{menuItems}</div>
+            <button onClick={toggleMenu}>
+              {open ? <FiX size={22} /> : <FiMenu size={22} />}
+            </button>
           </div>
         </div>
-      )}
-    </nav>
+
+        {/* ===== DESKTOP NAV ===== */}
+        <div className="hidden md:block pointer-events-none">
+          <motion.nav
+            initial={{ y: -12, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.45, ease: 'easeOut' }}
+            className="
+              pointer-events-auto
+              mx-auto mt-4 w-fit
+              px-6 py-3
+              rounded-full
+              backdrop-blur-xl
+              bg-white/80 dark:bg-neutral-950/80
+              border border-neutral-200/60 dark:border-neutral-800
+              shadow-lg
+              flex items-center gap-5
+            "
+          >
+            {/* Brand */}
+            <a
+              href="#home"
+              onClick={(e) => handleScroll(e, '#home')}
+              className="
+                font-bold text-sm pr-4
+                border-r border-neutral-200 dark:border-neutral-800
+                text-neutral-900 dark:text-neutral-100
+              "
+            >
+              Giovan
+            </a>
+
+            {/* Links */}
+            <div className="flex items-center gap-1">
+              {navLinks.map((link) => (
+                <a
+                  key={link.name}
+                  href={link.href}
+                  onClick={(e) => handleScroll(e, link.href)}
+                  className="
+                    group relative px-4 py-2
+                    text-sm font-medium
+                    text-neutral-600 dark:text-neutral-400
+                    transition-colors duration-300
+                    hover:text-neutral-900 dark:hover:text-white
+                    overflow-hidden
+                  "
+                >
+                  {/* === GLOW PILL === */}
+                  <span
+                    className="
+                      absolute inset-0 rounded-full
+                      bg-indigo-500/10 dark:bg-indigo-400/10
+                      opacity-0 group-hover:opacity-100
+                      blur-md
+                      transition-opacity duration-300
+                    "
+                  />
+
+                  {/* === LIGHT SWEEP === */}
+                  <span
+                    className="
+                      absolute -left-1/2 top-0 h-full w-1/2
+                      bg-gradient-to-r from-transparent via-white/40 to-transparent
+                      translate-x-0 group-hover:translate-x-[200%]
+                      transition-transform duration-700 ease-out
+                    "
+                  />
+
+                  {/* Text */}
+                  <span className="relative z-10">
+                    {link.name}
+                  </span>
+
+                  {/* === UNDERLINE BEAM === */}
+                  <span
+                    className="
+                      absolute left-1/2 -bottom-1
+                      h-[2px] w-0 -translate-x-1/2
+                      bg-gradient-to-r from-indigo-500 via-cyan-400 to-indigo-500
+                      rounded-full
+                      group-hover:w-3/4
+                      transition-all duration-300
+                    "
+                  />
+                </a>
+              ))}
+
+              {/* Dark Mode */}
+              <button
+                onClick={toggleDarkMode}
+                className="
+                  ml-2 p-2 rounded-full
+                  text-neutral-600 dark:text-neutral-300
+                  hover:bg-neutral-200/60 dark:hover:bg-neutral-800
+                  transition
+                "
+              >
+                {darkMode ? <FiSun size={16} /> : <FiMoon size={16} />}
+              </button>
+            </div>
+          </motion.nav>
+        </div>
+      </header>
+
+      {/* ===== MOBILE MENU ===== */}
+      <AnimatePresence>
+        {open && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black/40 z-40"
+              onClick={toggleMenu}
+            />
+
+            <motion.aside
+              initial={{ y: '-100%' }}
+              animate={{ y: 0 }}
+              exit={{ y: '-100%' }}
+              transition={{ duration: 0.35, ease: 'easeOut' }}
+              className="fixed inset-0 z-50 bg-white dark:bg-neutral-950 px-6 py-8"
+            >
+              <div className="flex justify-between mb-10">
+                <span className="font-bold">Menu</span>
+                <button onClick={toggleMenu}>
+                  <FiX size={22} />
+                </button>
+              </div>
+
+              <div className="flex flex-col gap-6">
+                {navLinks.map((link) => (
+                  <a
+                    key={link.name}
+                    href={link.href}
+                    onClick={(e) => handleScroll(e, link.href)}
+                    className="
+                      text-2xl font-semibold
+                      text-neutral-800 dark:text-neutral-200
+                      hover:text-indigo-500 transition
+                    "
+                  >
+                    {link.name}
+                  </a>
+                ))}
+              </div>
+            </motion.aside>
+          </>
+        )}
+      </AnimatePresence>
+    </>
   );
 }

@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 /* Custom CSS */
-@layer base {
+/* @layer base {
   body {
     @apply transition-colors duration-300;
   }
@@ -11,7 +11,12 @@
   * {
     @apply transition-all duration-200;
   }
+} */
+ 
+html {
+  scroll-behavior: smooth;
 }
+
 
 @layer components {
   .animate-gradient {

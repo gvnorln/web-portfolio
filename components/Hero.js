@@ -1,147 +1,238 @@
 "use client";
-
 import Image from "next/image";
-import { Typewriter } from "react-simple-typewriter";
-import { FaGithub, FaLinkedin, FaArrowDown } from "react-icons/fa";
-import { BsMouse } from "react-icons/bs";
 import { motion } from "framer-motion";
+import { Typewriter } from "react-simple-typewriter";
+import { FaGithub, FaLinkedin } from "react-icons/fa";
 import { useMemo } from "react";
 import { useMounted } from "./useMounted";
-
 export default function Hero() {
   const mounted = useMounted();
-
-  const typewriterWords = useMemo(
+  const roles = useMemo(
     () => [
-      "Giovan Orlen",
       "Fullstack Developer",
-      "UI/UX Designer",
-      "Tech Enthusiast",
+      "UI / UX Explorer",
+      "Tech & System Enthusiast",
     ],
     []
   );
-
-  const handleScroll = () => {
+  const scrollToAbout = () => {
     document.getElementById("about")?.scrollIntoView({ behavior: "smooth" });
   };
-
   return (
     <section
       id="home"
-      className="
-        relative min-h-screen overflow-hidden
-        flex items-center justify-center
-        bg-gradient-to-b from-white via-blue-50 to-purple-50
-        dark:from-gray-900 dark:via-gray-900 dark:to-gray-800
-        px-6
-      "
+      className=" relative min-h-screen overflow-hidden bg-white dark:bg-neutral-950 px-6 "
     >
-      {/* ===== STATIC BACKGROUND ===== */}
+      {" "}
+      {/* ===== Ambient Background ===== */}{" "}
       <div
         aria-hidden
-        className="
-          absolute -top-[30rem] -left-[30rem]
-          w-[60rem] h-[60rem]
-          rounded-full blur-3xl
-          bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20
-        "
-      />
-
-      <div className="relative z-10 max-w-6xl w-full flex flex-col-reverse md:flex-row items-center gap-12">
-        {/* ===== TEXT (NO MOUNT ANIMATION) ===== */}
-        <div className="w-full md:w-1/2 text-center md:text-left">
-          <h1 className="text-4xl md:text-6xl font-extrabold leading-tight mb-4">
-            <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+        className=" absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(99,102,241,0.15),transparent_40%), radial-gradient(circle_at_80%_30%,rgba(236,72,153,0.15),transparent_40%)] "
+      />{" "}
+      <div className=" relative z-10 max-w-7xl mx-auto min-h-screen pt-20 flex flex-col justify-center ">
+        {" "}
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-10 items-center">
+          {" "}
+          {/* ===== LEFT : TYPOGRAPHY ===== */}{" "}
+          <div className="md:col-span-7">
+            {" "}
+            <motion.p
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="text-sm tracking-widest uppercase text-neutral-500 mb-4"
+            >
+              {" "}
+              Hello, I’m{" "}
+            </motion.p>{" "}
+            <motion.h1
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.05 }}
+              className=" text-[clamp(3rem,6vw,5.5rem)] font-black leading-[1.05] text-neutral-900 dark:text-neutral-100 "
+            >
+              {" "}
+              Giovan{" "}
+              <span className="block text-neutral-400 dark:text-neutral-600">
+                {" "}
+                Orlen{" "}
+              </span>{" "}
+            </motion.h1>{" "}
+            {/* ===== ROLE ===== */}{" "}
+            <div className="mt-6 text-lg md:text-xl text-neutral-600 dark:text-neutral-300 h-8">
+              {" "}
               {mounted && (
                 <Typewriter
-                  words={typewriterWords}
+                  words={roles}
                   loop={0}
                   cursor
-                  typeSpeed={70}
-                  deleteSpeed={45}
-                  delaySpeed={2000}
-                  cursorColor="#3B82F6"
+                  typeSpeed={60}
+                  deleteSpeed={40}
+                  delaySpeed={1800}
                 />
-              )}
-            </span>
-          </h1>
-
-          <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-8">
-            Turning <span className="text-blue-600 font-semibold">ideas</span>{" "}
-            into{" "}
-            <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent font-semibold">
-              digital reality
-            </span>
-          </p>
-
-          <div className="flex flex-wrap justify-center md:justify-start gap-4 mb-8">
-            <button
-              onClick={handleScroll}
-              className="px-6 py-3 rounded-xl font-semibold bg-blue-600 text-white hover:bg-blue-700 transition shadow-lg"
+              )}{" "}
+            </div>{" "}
+            {/* ===== DESCRIPTION ===== */}{" "}
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.25 }}
+              className="mt-6 max-w-xl text-neutral-600 dark:text-neutral-400 leading-relaxed"
             >
-              Explore More
-            </button>
-
-            <a
-              href="/cv-giovan-orlen.pdf"
-              className="px-6 py-3 rounded-xl font-semibold border border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white transition"
+              {" "}
+              I build scalable web systems with strong attention to performance,
+              architecture, and clean user experience.{" "}
+            </motion.p>{" "}
+            {/* ===== ACTIONS ===== */}{" "}
+            <div className="mt-8 flex items-center gap-6">
+              {" "}
+              <button
+                onClick={scrollToAbout}
+                className=" text-sm font-semibold text-neutral-900 dark:text-neutral-100 underline underline-offset-8 hover:text-indigo-600 dark:hover:text-indigo-400 transition "
+              >
+                {" "}
+                Explore work{" "}
+              </button>{" "}
+              <a
+                href="/cv-giovan-orlen.pdf"
+                className=" text-sm font-semibold text-neutral-500 hover:text-neutral-900 dark:hover:text-neutral-100 transition "
+              >
+                {" "}
+                Download CV{" "}
+              </a>{" "}
+            </div>{" "}
+            {/* ===== SOCIAL ===== */}{" "}
+            <div className="mt-10 flex gap-5 text-neutral-500">
+              {" "}
+              <a
+                href="https://github.com/"
+                aria-label="GitHub"
+                className="hover:text-neutral-900 dark:hover:text-white transition"
+              >
+                {" "}
+                <FaGithub size={22} />{" "}
+              </a>{" "}
+              <a
+                href="https://linkedin.com/"
+                aria-label="LinkedIn"
+                className="hover:text-neutral-900 dark:hover:text-white transition"
+              >
+                {" "}
+                <FaLinkedin size={22} />{" "}
+              </a>{" "}
+            </div>{" "}
+          </div>{" "}
+          {/* ===== RIGHT : VISUAL ===== */}{" "}
+          <div className="md:col-span-5 flex justify-center md:justify-end">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+              whileHover={{
+                rotateX: 6,
+                rotateY: -6,
+              }}
+              className="
+      group relative
+      w-60 h-80 md:w-72 md:h-96
+      rounded-[28px]
+      overflow-hidden
+      will-change-transform
+      [transform-style:preserve-3d]
+    "
             >
-              Download CV
-            </a>
+              {/* ===== ANIMATED GRADIENT BACKGROUND ===== */}
+              <div
+                className="
+        absolute inset-0
+        bg-[radial-gradient(circle_at_30%_20%,rgba(99,102,241,0.45),transparent_60%),
+            radial-gradient(circle_at_80%_80%,rgba(34,211,238,0.35),transparent_55%)]
+        dark:bg-[radial-gradient(circle_at_30%_20%,rgba(99,102,241,0.35),transparent_60%),
+            radial-gradient(circle_at_80%_80%,rgba(14,165,233,0.25),transparent_55%)]
+        transition-all duration-700
+        group-hover:scale-110
+      "
+              />
+
+              {/* ===== GLASS LAYER ===== */}
+              <div
+                className="
+        absolute inset-[1px]
+        rounded-[26px]
+        backdrop-blur-xl
+        bg-white/70 dark:bg-neutral-900/70
+      "
+              />
+
+              {/* ===== IMAGE WRAPPER (DEPTH) ===== */}
+              <div
+                className="
+        absolute inset-3
+        rounded-2xl
+        overflow-hidden
+        shadow-xl
+        transition-transform duration-700 ease-out
+        group-hover:translate-y-[-6px]
+      "
+              >
+                <Image
+                  src="/profile2.jpeg"
+                  alt="Giovan Orlen"
+                  fill
+                  priority
+                  className="
+          object-cover
+          transition-transform duration-700 ease-out
+          group-hover:scale-[1.07]
+        "
+                />
+              </div>
+
+              {/* ===== LIGHT SWEEP ===== */}
+              <span
+                className="
+        pointer-events-none
+        absolute -left-1/2 top-0
+        h-full w-1/2
+        bg-gradient-to-r
+        from-transparent
+        via-white/40
+        to-transparent
+        opacity-0
+        group-hover:opacity-100
+        translate-x-0
+        group-hover:translate-x-[220%]
+        transition-all duration-700 ease-out
+      "
+              />
+
+              {/* ===== OUTER GLOW ===== */}
+              <div
+                className="
+        pointer-events-none
+        absolute inset-0
+        rounded-[28px]
+        shadow-[0_40px_120px_-40px_rgba(99,102,241,0.55)]
+        opacity-0
+        group-hover:opacity-100
+        transition-opacity duration-700
+      "
+              />
+            </motion.div>
           </div>
-
-          <div className="flex justify-center md:justify-start gap-5 text-gray-700 dark:text-gray-300">
-            <FaGithub size={28} />
-            <FaLinkedin size={28} />
-          </div>
-        </div>
-
-        {/* ===== IMAGE WITH IDLE FLOAT (SAFE) ===== */}
-        <div className="w-full md:w-1/2 flex justify-center">
-          <motion.div
-            animate={{ y: [0, -6, 0] }}
-            transition={{
-              duration: 5,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
-            className="
-              relative w-56 h-56 md:w-72 md:h-72
-              rounded-full overflow-hidden
-              border-4 border-white dark:border-gray-800
-              shadow-2xl
-              bg-white dark:bg-gray-900
-            "
-          >
-            <Image
-              src="/profile2.jpeg"
-              alt="Giovan Orlen"
-              width={288}
-              height={288}
-              priority
-              className="object-cover w-full h-full"
-            />
-          </motion.div>
-        </div>
-      </div>
-
-      {/* ===== SCROLL INDICATOR ===== */}
-      <div
-        onClick={handleScroll}
-        className="absolute bottom-6 md:bottom-10 left-1/2 -translate-x-1/2 cursor-pointer text-blue-600 dark:text-blue-400"
-      >
+        </div>{" "}
+        {/* ===== SCROLL HINT ===== */}{" "}
         <motion.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
+          onClick={scrollToAbout}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.8 }}
+          className=" absolute bottom-8 left-1/2 -translate-x-1/2 text-xs tracking-widest uppercase text-neutral-400 cursor-pointer hover:text-neutral-700 dark:hover:text-neutral-200 transition "
         >
-          <span className="hidden md:block">
-            <BsMouse size={28} />
-          </span>
-          <span className="md:hidden">
-            <FaArrowDown size={26} />
-          </span>
-        </motion.div>
-      </div>
+          {" "}
+          Scroll{" "}
+        </motion.div>{" "}
+      </div>{" "}
     </section>
   );
 }

@@ -1,8 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import Image from "next/image";
-import { memo } from "react";
 import { FaGithub } from "react-icons/fa";
 import {
   SiReact,
@@ -19,8 +18,9 @@ import {
   SiKubernetes,
 } from "react-icons/si";
 
-/* ===================== ICON MAP ===================== */
-const techIcons = {
+/* ================= ICON MAP ================= */
+
+const ICON_MAP = {
   React: <SiReact className="text-[#61DAFB]" />,
   "Next.js": <SiNextdotjs className="text-black dark:text-white" />,
   "Tailwind CSS": <SiTailwindcss className="text-[#06B6D4]" />,
@@ -29,14 +29,15 @@ const techIcons = {
   PostgreSQL: <SiPostgresql className="text-[#4169E1]" />,
   Vite: <SiVite className="text-[#646CFF]" />,
   "OpenWeather API": <SiOpenstreetmap className="text-[#EB6E4B]" />,
-  Express: <SiExpress className="text-gray-700 dark:text-gray-200" />,
+  Express: <SiExpress className="text-neutral-700 dark:text-neutral-200" />,
   Golang: <SiGo className="text-[#00ADD8]" />,
   Docker: <SiDocker className="text-[#2496ED]" />,
   Kubernetes: <SiKubernetes className="text-[#326CE5]" />,
 };
 
-/* ===================== DATA ===================== */
-const projects = [
+/* ================= DATA ================= */
+
+const PROJECTS = [
   {
     title: "Dashboard Admin",
     description: "Modern admin dashboard with analytics and clean UI.",
@@ -53,7 +54,7 @@ const projects = [
   },
   {
     title: "Weather App",
-    description: "Real-time weather forecast app.",
+    description: "Real-time weather forecast application.",
     tech: ["React", "Tailwind CSS", "OpenWeather API"],
     github: "https://github.com/gvnorln/weather-app-react",
     image: "/images/weather-app-preview.png",
@@ -74,81 +75,165 @@ const projects = [
   },
 ];
 
-/* ===================== COMPONENT ===================== */
-const Projects = memo(() => (
-  <section id="projects" className="py-20 bg-white dark:bg-gray-900">
-    <div className="max-w-7xl mx-auto px-6">
-      <h2 className="text-4xl font-extrabold text-center mb-14 bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent">
-        Selected Projects
-      </h2>
+/* ================= ANIMATION ================= */
 
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
-        {projects.map((p) => (
-          <motion.article
-            key={p.title}
-            whileHover={{
-              y: -6,
-              transition: { duration: 0.25, ease: "easeOut" },
-            }}
-            className="group flex flex-col h-full rounded-3xl
-                       bg-white dark:bg-gray-800
-                       border border-gray-200 dark:border-gray-700
-                       shadow-md hover:shadow-2xl
-                       will-change-transform"
-          >
-            <div className="relative h-48 overflow-hidden rounded-t-3xl">
-              <Image
-                src={p.image}
-                alt={p.title}
-                fill
-                sizes="(max-width:768px) 100vw, (max-width:1280px) 50vw, 33vw"
-                className="object-cover transition-transform duration-500 ease-out
-                           group-hover:scale-[1.05]"
-              />
-            </div>
+const container = {
+  hidden: {},
+  show: {
+    transition: {
+      staggerChildren: 0.18,
+      delayChildren: 0.12,
+    },
+  },
+};
 
-            <div className="flex flex-col flex-1 p-6">
-              <h3 className="text-xl font-bold mb-2 text-gray-900 dark:text-gray-100">
-                {p.title}
-              </h3>
+const fadeUp = (reduce) => ({
+  hidden: { opacity: 0, y: reduce ? 0 : 24 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: reduce
+      ? { duration: 0 }
+      : {
+          type: "spring",
+          stiffness: 60,
+          damping: 18,
+          mass: 0.9,
+        },
+  },
+});
 
-              <p className="text-gray-600 dark:text-gray-400 mb-4">
-                {p.description}
-              </p>
+/* ================= COMPONENT ================= */
 
-              <div className="flex flex-wrap gap-2 mb-6">
-                {p.tech.map((t) => (
-                  <span
-                    key={t}
-                    className="flex items-center gap-2 px-3 py-1.5 text-sm
-                               rounded-full
-                               bg-gray-100 dark:bg-gray-700
-                               text-gray-800 dark:text-gray-200"
-                  >
-                    {techIcons[t]}
-                    {t}
-                  </span>
-                ))}
+export default function Projects() {
+  const reduceMotion = useReducedMotion();
+
+  return (
+    <section
+      id="projects"
+      className="
+        relative py-28
+        bg-white dark:bg-neutral-950
+        px-6
+      "
+    >
+      {/* ===== AMBIENCE (SAME AS SKILLS) ===== */}
+      <div
+        aria-hidden
+        className="
+          absolute inset-0
+          bg-[radial-gradient(circle_at_30%_20%,rgba(99,102,241,0.08),transparent_45%),
+              radial-gradient(circle_at_80%_80%,rgba(14,165,233,0.06),transparent_40%)]
+        "
+      />
+
+      <div className="relative z-10 max-w-7xl mx-auto">
+        {/* ===== HEADER ===== */}
+        <motion.div
+          variants={fadeUp(reduceMotion)}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-80px" }}
+          className="max-w-3xl mx-auto text-center mb-24"
+        >
+          <p className="text-xs tracking-widest uppercase text-neutral-500 mb-4">
+            Projects
+          </p>
+          <h2 className="text-4xl md:text-5xl font-extrabold text-neutral-900 dark:text-neutral-100">
+            Selected
+            <span className="block text-neutral-400 dark:text-neutral-600">
+              work & experiments
+            </span>
+          </h2>
+        </motion.div>
+
+        {/* ===== GRID ===== */}
+        <motion.div
+          variants={container}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-120px" }}
+          className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10"
+        >
+          {PROJECTS.map((p) => (
+            <motion.article
+              key={p.title}
+              variants={fadeUp(reduceMotion)}
+              className="
+                group flex flex-col
+                rounded-3xl
+                border border-neutral-200/60 dark:border-neutral-800
+                bg-neutral-50/70 dark:bg-neutral-900/60
+                backdrop-blur-xl
+                overflow-hidden
+                transition
+                hover:-translate-y-1
+              "
+            >
+              {/* Image */}
+              <div className="relative h-52">
+                <Image
+                  src={p.image}
+                  alt={p.title}
+                  fill
+                  sizes="(max-width:768px) 100vw, (max-width:1280px) 50vw, 33vw"
+                  className="object-cover"
+                />
               </div>
 
-              <a
-                href={p.github}
-                target="_blank"
-                className="mt-auto inline-flex items-center justify-center gap-2
-                           w-full px-5 py-3 rounded-xl font-semibold
-                           bg-gradient-to-r from-blue-600 to-cyan-500
-                           text-white transition-transform duration-300
-                           group-hover:translate-x-1"
-              >
-                <FaGithub className="text-lg" />
-                View Source
-              </a>
-            </div>
-          </motion.article>
-        ))}
-      </div>
-    </div>
-  </section>
-));
+              {/* Content */}
+              <div className="flex flex-col flex-1 p-8">
+                <h3 className="text-xl font-bold text-neutral-900 dark:text-neutral-100 mb-2">
+                  {p.title}
+                </h3>
 
-export default Projects;
+                <p className="text-neutral-600 dark:text-neutral-400 mb-6">
+                  {p.description}
+                </p>
+
+                {/* Tech */}
+                <div className="flex flex-wrap gap-2 mb-8">
+                  {p.tech.map((t) => (
+                    <span
+                      key={t}
+                      className="
+                        flex items-center gap-2
+                        px-3 py-1.5 rounded-xl
+                        text-sm font-medium
+                        bg-neutral-100 dark:bg-neutral-800
+                        text-neutral-700 dark:text-neutral-300
+                        hover:bg-indigo-100 dark:hover:bg-indigo-900/40
+                        transition
+                      "
+                    >
+                      <span className="text-lg">{ICON_MAP[t]}</span>
+                      {t}
+                    </span>
+                  ))}
+                </div>
+
+                {/* Action */}
+                <a
+                  href={p.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="
+                    mt-auto inline-flex items-center justify-center gap-2
+                    w-full py-3 rounded-xl
+                    bg-neutral-900 dark:bg-neutral-100
+                    text-white dark:text-neutral-900
+                    text-sm font-semibold
+                    hover:opacity-90 transition
+                  "
+                >
+                  <FaGithub />
+                  View Source
+                </a>
+              </div>
+            </motion.article>
+          ))}
+        </motion.div>
+      </div>
+    </section>
+  );
+}

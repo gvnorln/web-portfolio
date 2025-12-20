@@ -1,201 +1,249 @@
-'use client';
+"use client";
 
-import { memo } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from "framer-motion";
 import {
   FaUniversity,
   FaGraduationCap,
   FaShieldAlt,
-  FaGithub
-} from 'react-icons/fa';
+  FaGithub,
+} from "react-icons/fa";
 import {
   FiCode,
   FiDatabase,
   FiBookOpen,
   FiGlobe,
   FiServer,
-  FiLock
-} from 'react-icons/fi';
+  FiLock,
+} from "react-icons/fi";
 
-/* ===================== DATA ===================== */
-const courses = [
-  { name: 'Algorithms & Programming', icon: FiCode },
-  { name: 'Database Systems', icon: FiDatabase },
-  { name: 'Web Development', icon: FiGlobe },
-  { name: 'Software Engineering', icon: FiBookOpen },
-  { name: 'Cloud Computing', icon: FiServer },
+/* ================= DATA ================= */
+
+const COURSES = [
+  { name: "Algorithms & Programming", icon: <FiCode /> },
+  { name: "Database Systems", icon: <FiDatabase /> },
+  { name: "Web Development", icon: <FiGlobe /> },
+  { name: "Software Engineering", icon: <FiBookOpen /> },
+  { name: "Cloud Computing", icon: <FiServer /> },
 ];
 
-/* ===================== COURSE CARD ===================== */
-const CourseItem = memo(({ name, Icon }) => (
-  <motion.div
-    whileHover={{ y: -4 }}
-    transition={{ duration: 0.2, ease: 'easeOut' }}
-    className="
-      group p-4 rounded-xl bg-white dark:bg-gray-800
-      border border-gray-200 dark:border-gray-700
-      shadow-sm hover:shadow-lg
-      will-change-transform
-    "
-  >
-    <div className="flex flex-col items-center text-center">
-      <Icon className="text-3xl mb-3 text-blue-600 dark:text-blue-400 transition-transform duration-300 group-hover:scale-110" />
-      <span className="text-sm font-medium text-gray-800 dark:text-gray-200">
-        {name}
-      </span>
-    </div>
-  </motion.div>
-));
+/* ================= ANIMATION ================= */
 
-/* ===================== MAIN ===================== */
-const Education = memo(() => (
-  <section
-    id="education"
-    className="py-24 bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-950"
-  >
-    <div className="max-w-6xl mx-auto px-6">
-      {/* Title */}
-      <h2 className="text-3xl md:text-4xl font-extrabold text-center mb-16 bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent">
-        Academic Education
-      </h2>
+const container = {
+  hidden: {},
+  show: {
+    transition: {
+      staggerChildren: 0.18,
+      delayChildren: 0.12,
+    },
+  },
+};
 
-      {/* ===================== EDUCATION CARD ===================== */}
-      <div className="flex justify-center mb-20">
-        <div
-          className="
-            w-full max-w-4xl rounded-3xl
-            bg-white/90 dark:bg-gray-900/90
-            backdrop-blur
-            border border-gray-200 dark:border-gray-700
-            shadow-xl p-8 md:p-10
-          "
-        >
-          {/* Header */}
-          <div className="text-center mb-10">
-            <FaUniversity className="mx-auto text-4xl text-blue-600 dark:text-blue-400 mb-4" />
+const fadeUp = (reduce) => ({
+  hidden: { opacity: 0, y: reduce ? 0 : 24 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: reduce
+      ? { duration: 0 }
+      : {
+          type: "spring",
+          stiffness: 60,
+          damping: 18,
+          mass: 0.9,
+        },
+  },
+});
 
-            <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
-              Krisnadwipayana University
-            </h3>
+/* ================= COMPONENT ================= */
 
-            <p className="mt-2 flex justify-center items-center gap-2 text-cyan-600 dark:text-cyan-400 font-medium">
-              <FaGraduationCap />
-              Faculty of Informatics Engineering
-            </p>
+export default function Education() {
+  const reduceMotion = useReducedMotion();
 
-            <div className="mt-6 flex flex-col items-center gap-3">
-              <span className="px-4 py-1.5 rounded-full text-xs font-semibold bg-blue-600 text-white">
-                2021 — Present
-              </span>
+  return (
+    <section
+      id="education"
+      className="
+        relative py-28
+        bg-white dark:bg-neutral-950
+        px-6
+      "
+    >
+      {/* ===== SUBTLE AMBIENCE (SAME AS SKILLS) ===== */}
+      <div
+        aria-hidden
+        className="
+          absolute inset-0
+          bg-[radial-gradient(circle_at_30%_20%,rgba(99,102,241,0.08),transparent_45%),
+              radial-gradient(circle_at_80%_80%,rgba(14,165,233,0.06),transparent_40%)]
+        "
+      />
 
-              {/* Progress */}
-              <div className="w-64 h-2 rounded-full bg-gray-200 dark:bg-gray-700 overflow-hidden">
-                <div className="h-full w-[90%] bg-gradient-to-r from-blue-600 to-cyan-500 rounded-full" />
-              </div>
-
-              <p className="text-sm font-medium text-gray-600 dark:text-gray-300">
-                Current GPA: <span className="font-semibold">3.63 / 4.00</span>
-              </p>
-            </div>
-          </div>
-
-          {/* Courses */}
-          <div>
-            <h4 className="flex items-center justify-center gap-2 text-lg font-semibold text-gray-800 dark:text-gray-200 mb-6">
-              <FiBookOpen />
-              Relevant Courses
-            </h4>
-
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-              {courses.map((c) => (
-                <CourseItem key={c.name} name={c.name} Icon={c.icon} />
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* ===================== THESIS SECTION ===================== */}
-      <div className="flex justify-center">
+      <div className="relative z-10 max-w-6xl mx-auto">
+        {/* ===== HEADER ===== */}
         <motion.div
-          whileHover={{ y: -4 }}
-          transition={{ duration: 0.25, ease: 'easeOut' }}
-          className="
-            w-full max-w-4xl rounded-3xl
-            bg-gradient-to-br from-blue-600/90 to-cyan-500/90
-            text-white
-            shadow-2xl p-8 md:p-10
-            will-change-transform
-          "
+          variants={fadeUp(reduceMotion)}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-80px" }}
+          className="max-w-3xl mx-auto text-center mb-24"
         >
-          {/* Header */}
-          <div className="flex items-center gap-3 mb-6">
-            <FaShieldAlt className="text-3xl" />
-            <h3 className="text-2xl font-bold">
-              Final Project / Thesis
-            </h3>
-          </div>
-
-          <h4 className="text-xl font-semibold mb-3">
-            Implementation of Dynamic Secrets for Securing Kubernetes CI/CD Pipelines
-          </h4>
-
-          <p className="text-white/90 leading-relaxed mb-6">
-            This research focuses on improving CI/CD pipeline security by
-            implementing <strong>Dynamic Secrets</strong> using
-            <strong> HashiCorp Vault</strong>, integrated with
-            <strong> GitHub Actions</strong> and <strong>Kubernetes</strong>.
-            The solution eliminates the risk of static credential leakage
-            through short-lived, TTL-based secrets obtained via OIDC authentication.
+          <p className="text-xs tracking-widest uppercase text-neutral-500 mb-4">
+            Education
           </p>
+          <h2 className="text-4xl md:text-5xl font-extrabold text-neutral-900 dark:text-neutral-100">
+            Academic
+            <span className="block text-neutral-400 dark:text-neutral-600">
+              background & research
+            </span>
+          </h2>
+        </motion.div>
 
-          {/* Highlights */}
-          <div className="grid sm:grid-cols-2 gap-4 mb-6">
-            <div className="flex gap-3 items-start">
-              <FiLock className="text-xl shrink-0" />
-              <p className="text-sm">
-                <strong>0% secrets leakage</strong> detected using Gitleaks & Git-Secrets
-              </p>
-            </div>
-            <div className="flex gap-3 items-start">
-              <FiServer className="text-xl shrink-0" />
-              <p className="text-sm">
-                Automatic credential rotation in <strong>~74ms</strong> (Vault TTL-based)
-              </p>
-            </div>
-            <div className="flex gap-3 items-start">
-              <FiCode className="text-xl shrink-0" />
-              <p className="text-sm">
-                Secure CI/CD authentication via <strong>GitHub OIDC</strong>
-              </p>
-            </div>
-            <div className="flex gap-3 items-start">
-              <FiBookOpen className="text-xl shrink-0" />
-              <p className="text-sm">
-                <strong>100% compliance</strong> with NIST SP 800-171
-              </p>
-            </div>
-          </div>
-
-          {/* Action */}
-          <a
-            href="https://github.com/gvnorln/vault-secrets-research.git"
-            target="_blank"
-            rel="noopener noreferrer"
+        {/* ===== EDUCATION CARD ===== */}
+        <motion.div
+          variants={container}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-120px" }}
+          className="flex justify-center mb-24"
+        >
+          <motion.article
+            variants={fadeUp(reduceMotion)}
             className="
-              inline-flex items-center gap-2
-              px-5 py-3 rounded-xl
-              bg-white text-blue-700 font-semibold
-              hover:bg-gray-100 transition
+              w-full max-w-4xl
+              rounded-3xl
+              border border-neutral-200/60 dark:border-neutral-800
+              bg-neutral-50/70 dark:bg-neutral-900/60
+              backdrop-blur-xl
+              p-10
+              space-y-10
             "
           >
-            <FaGithub />
-            View Project Details
-          </a>
+            {/* University */}
+            <div className="text-center space-y-3">
+              <FaUniversity className="mx-auto text-3xl text-indigo-500" />
+              <h3 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100">
+                Krisnadwipayana University
+              </h3>
+              <p className="flex justify-center items-center gap-2 text-sm font-medium text-neutral-600 dark:text-neutral-400">
+                <FaGraduationCap />
+                Informatics Engineering
+              </p>
+
+              <div className="mt-6 space-y-3">
+                <span className="inline-block px-4 py-1.5 rounded-full text-xs font-semibold bg-indigo-600 text-white">
+                  2021 — Present
+                </span>
+
+                <p className="text-sm text-neutral-600 dark:text-neutral-400">
+                  GPA: <strong>3.63 / 4.00</strong>
+                </p>
+              </div>
+            </div>
+
+            {/* Courses */}
+            <div>
+              <h4 className="text-center text-lg font-semibold text-neutral-800 dark:text-neutral-200 mb-6 flex justify-center gap-2">
+                <FiBookOpen />
+                Relevant Courses
+              </h4>
+
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+                {COURSES.map((c) => (
+                  <div
+                    key={c.name}
+                    className="
+                      flex flex-col items-center text-center
+                      px-4 py-4 rounded-2xl
+                      bg-neutral-100 dark:bg-neutral-800
+                      text-sm font-medium
+                      text-neutral-700 dark:text-neutral-300
+                      transition
+                      hover:-translate-y-0.5
+                      hover:bg-indigo-100 dark:hover:bg-indigo-900/40
+                    "
+                  >
+                    <span className="text-xl mb-2 text-indigo-500">
+                      {c.icon}
+                    </span>
+                    {c.name}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </motion.article>
+        </motion.div>
+
+        {/* ===== THESIS ===== */}
+        <motion.div
+          variants={fadeUp(reduceMotion)}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true }}
+          className="flex justify-center"
+        >
+          <article
+            className="
+              w-full max-w-4xl
+              rounded-3xl
+              border border-neutral-200/60 dark:border-neutral-800
+              bg-neutral-50/70 dark:bg-neutral-900/60
+              backdrop-blur-xl
+              p-10
+              space-y-6
+            "
+          >
+            <div className="flex items-center gap-3">
+              <FaShieldAlt className="text-xl text-indigo-500" />
+              <h3 className="text-xl font-bold text-neutral-900 dark:text-neutral-100">
+                Final Project / Thesis
+              </h3>
+            </div>
+
+            <h4 className="text-lg font-semibold text-neutral-800 dark:text-neutral-200">
+              Dynamic Secrets for Kubernetes CI/CD Security
+            </h4>
+
+            <p className="text-neutral-600 dark:text-neutral-400 leading-relaxed">
+              Research on securing CI/CD pipelines using{" "}
+              <strong>HashiCorp Vault</strong>, integrated with{" "}
+              <strong>GitHub Actions</strong> and{" "}
+              <strong>Kubernetes</strong>.
+            </p>
+
+            <div className="grid sm:grid-cols-2 gap-4 text-sm text-neutral-600 dark:text-neutral-400">
+              <div className="flex gap-2">
+                <FiLock /> 0% secrets leakage
+              </div>
+              <div className="flex gap-2">
+                <FiServer /> Rotation ~74ms
+              </div>
+              <div className="flex gap-2">
+                <FiCode /> GitHub OIDC
+              </div>
+              <div className="flex gap-2">
+                <FiBookOpen /> NIST SP 800-171
+              </div>
+            </div>
+
+            <a
+              href="https://github.com/gvnorln/vault-secrets-research.git"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="
+                inline-flex items-center gap-2
+                px-5 py-3 rounded-xl
+                bg-neutral-900 dark:bg-neutral-100
+                text-white dark:text-neutral-900
+                font-semibold
+                hover:opacity-90 transition
+              "
+            >
+              <FaGithub />
+              View Repository
+            </a>
+          </article>
         </motion.div>
       </div>
-    </div>
-  </section>
-));
-
-export default Education;
+    </section>
+  );
+}

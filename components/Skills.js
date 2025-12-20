@@ -1,5 +1,6 @@
 "use client";
 
+import { motion, useReducedMotion } from "framer-motion";
 import {
   FaReact,
   FaNode,
@@ -29,6 +30,8 @@ import {
   SiMongodb,
 } from "react-icons/si";
 
+/* ================= ICON MAP ================= */
+
 const ICON_MAP = {
   React: <FaReact className="text-[#61DAFB]" />,
   "Next.js": <SiNextdotjs className="text-black dark:text-white" />,
@@ -55,6 +58,8 @@ const ICON_MAP = {
   PostgreSQL: <SiPostgresql className="text-[#4169E1]" />,
   MongoDB: <SiMongodb className="text-[#47A248]" />,
 };
+
+/* ================= DATA ================= */
 
 const SKILLS = [
   {
@@ -93,71 +98,133 @@ const SKILLS = [
   },
 ];
 
+/* ================= ANIMATION PRESET ================= */
+
+const container = {
+  hidden: {},
+  show: {
+    transition: {
+      staggerChildren: 0.18,
+      delayChildren: 0.12,
+    },
+  },
+};
+
+const fadeUp = (reduce) => ({
+  hidden: { opacity: 0, y: reduce ? 0 : 24 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: reduce
+      ? { duration: 0 }
+      : {
+          type: "spring",
+          stiffness: 60,
+          damping: 18,
+          mass: 0.9,
+        },
+  },
+});
+
+/* ================= COMPONENT ================= */
+
 export default function Skills() {
+  const reduceMotion = useReducedMotion();
+
   return (
     <section
       id="skills"
       className="
-        relative py-24
-        bg-gradient-to-b from-white via-blue-50 to-white
-        dark:from-gray-900 dark:via-gray-900 dark:to-gray-800
+        relative py-28
+        bg-white dark:bg-neutral-950
+        px-6
       "
     >
-      {/* ===== HEADER ===== */}
-      <div className="max-w-6xl mx-auto px-6 mb-16 text-center">
-        <h2 className="text-4xl md:text-5xl font-extrabold mb-4">
-          <span className="bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent">
-            Technical Expertise
-          </span>
-        </h2>
-        <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-          Technologies and tools I use to build scalable, secure, and modern
-          applications across frontend, backend, and DevOps.
-        </p>
-      </div>
+      {/* ===== SUBTLE GRADIENT AMBIENCE ===== */}
+      <div
+        aria-hidden
+        className="
+          absolute inset-0
+          bg-[radial-gradient(circle_at_30%_20%,rgba(99,102,241,0.08),transparent_45%),
+              radial-gradient(circle_at_80%_80%,rgba(14,165,233,0.06),transparent_40%)]
+        "
+      />
 
-      {/* ===== GRID ===== */}
-      <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-        {SKILLS.map((group) => (
-          <div
-            key={group.title}
+      <div className="relative z-10 max-w-6xl mx-auto">
+        {/* ===== HEADER ===== */}
+        <motion.div
+          variants={fadeUp(reduceMotion)}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-80px" }}
+          className="max-w-3xl mx-auto text-center mb-24 will-change-transform"
+        >
+          <p className="text-xs tracking-widest uppercase text-neutral-500 mb-4">
+            Skills
+          </p>
+          <h2
             className="
-              rounded-3xl
-              bg-white/80 dark:bg-gray-900/80
-              backdrop-blur-xl
-              border border-gray-200/50 dark:border-gray-700/50
-              shadow-xl
-              p-8
-              transition-transform duration-300
-              hover:scale-[1.02]
+              text-4xl md:text-5xl font-extrabold
+              text-neutral-900 dark:text-neutral-100
             "
           >
-            <h3 className="text-xl font-bold mb-6 text-gray-900 dark:text-white text-center">
-              {group.title}
-            </h3>
+            Technical
+            <span className="block text-neutral-400 dark:text-neutral-600">
+              expertise & tools
+            </span>
+          </h2>
+        </motion.div>
 
-            <div className="flex flex-wrap justify-center gap-3">
-              {group.tech.map((tech) => (
-                <div
-                  key={tech}
-                  className="
-                    flex items-center gap-2
-                    px-3 py-2
-                    rounded-xl
-                    bg-gray-100/70 dark:bg-gray-800/70
-                    text-sm font-medium
-                    text-gray-700 dark:text-gray-300
-                    transition
-                    hover:bg-blue-100 dark:hover:bg-blue-900/40
-                  "
-                >
-                  <span className="text-lg">{ICON_MAP[tech]}</span>
-                  <span>{tech}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        ))}
+        {/* ===== GRID ===== */}
+        <motion.div
+          variants={container}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-120px" }}
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10"
+        >
+          {SKILLS.map((group) => (
+            <motion.article
+              key={group.title}
+              variants={fadeUp(reduceMotion)}
+              className="
+                rounded-3xl
+                border border-neutral-200/60 dark:border-neutral-800
+                bg-neutral-50/70 dark:bg-neutral-900/60
+                backdrop-blur-xl
+                p-10
+                space-y-8
+                will-change-transform
+              "
+            >
+              <h3 className="text-xl font-bold text-neutral-900 dark:text-neutral-100 text-center">
+                {group.title}
+              </h3>
+
+              <div className="flex flex-wrap justify-center gap-3">
+                {group.tech.map((tech) => (
+                  <div
+                    key={tech}
+                    className="
+                      flex items-center gap-2
+                      px-3 py-2
+                      rounded-xl
+                      bg-neutral-100 dark:bg-neutral-800
+                      text-sm font-medium
+                      text-neutral-700 dark:text-neutral-300
+                      transition
+                      hover:-translate-y-0.5
+                      hover:bg-indigo-100 dark:hover:bg-indigo-900/40
+                    "
+                  >
+                    <span className="text-lg">{ICON_MAP[tech]}</span>
+                    <span>{tech}</span>
+                  </div>
+                ))}
+              </div>
+            </motion.article>
+          ))}
+        </motion.div>
       </div>
     </section>
   );

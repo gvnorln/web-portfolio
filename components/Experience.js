@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { motion } from "framer-motion";
 
 const experiences = [
@@ -8,30 +7,21 @@ const experiences = [
     company: "Bisnis Indonesia Group",
     role: "IT Programmer",
     period: "Feb 2024 – Jun 2024",
-    logo: "/images/big-logo.jpg",
     highlights: [
-      "Developed RESTful APIs for room reservation & article management (Laravel)",
-      "Integrated JWT authentication & route protection middleware",
-      "Built dynamic reservation & asset management UI (Next.js)",
-      "Designed relational tables in PostgreSQL & Oracle",
-      "Improved dashboard navigation & fixed cross-browser UI issues",
-      "Performed API testing with Postman & refactored legacy modules",
+      "Developed RESTful APIs for reservation & content systems",
+      "Implemented JWT authentication & secure middleware",
+      "Built scalable dashboards with Next.js",
+      "Designed relational schemas in PostgreSQL & Oracle",
+      "Refactored legacy modules & fixed production UI issues",
     ],
-    tech: [
-      "Laravel",
-      "Next.js",
-      "PostgreSQL",
-      "Oracle",
-      "JWT",
-      "Postman",
-    ],
+    tech: ["Laravel", "Next.js", "PostgreSQL", "Oracle", "JWT"],
   },
   {
     company: "Rakamin Academy",
     role: "Frontend Developer",
     period: "2023",
     highlights: [
-      "Built dynamic UI using Vue.js",
+      "Built modular UI using Vue.js",
       "Containerized frontend apps using Docker",
       "Implemented unit testing with Jest",
     ],
@@ -42,105 +32,127 @@ const experiences = [
     role: "Warehouse Data Entry",
     period: "2022",
     highlights: [
-      "Recorded incoming & outgoing inventory data",
-      "Verified invoices and goods receipts",
-      "Resolved discrepancies in inventory records",
+      "Managed inventory records accurately",
+      "Validated invoices & goods receipts",
+      "Resolved data discrepancies efficiently",
     ],
-    tech: ["Inventory System", "Data Verification"],
+    tech: ["Inventory System", "Data Validation"],
   },
 ];
+
+const container = {
+  hidden: {},
+  show: {
+    transition: {
+      staggerChildren: 0.15,
+    },
+  },
+};
+
+const item = {
+  hidden: { opacity: 0, y: 24 },
+  show: { opacity: 1, y: 0 },
+};
 
 export default function Experience() {
   return (
     <section
       id="experience"
       className="
-        relative py-24
-        bg-gradient-to-b from-white via-blue-50 to-white
-        dark:from-gray-900 dark:via-gray-900 dark:to-gray-800
+        relative py-28
+        bg-white dark:bg-neutral-950
+        px-6 md:px-10
       "
     >
-      {/* ===== HEADER ===== */}
-      <div className="max-w-6xl mx-auto px-6 mb-16 text-center">
-        <h2 className="text-4xl md:text-5xl font-extrabold mb-4">
-          <span className="bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent">
-            Professional Journey
-          </span>
-        </h2>
-        <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-          A snapshot of my professional experience, responsibilities, and technologies
-          I’ve worked with across software engineering and IT roles.
-        </p>
-      </div>
+      {/* ===== AMBIENT BACKDROP ===== */}
+      <div
+        aria-hidden
+        className="
+          absolute inset-0
+          bg-[radial-gradient(circle_at_20%_20%,rgba(59,130,246,0.12),transparent_45%),
+              radial-gradient(circle_at_80%_80%,rgba(14,165,233,0.12),transparent_45%)]
+        "
+      />
 
-      {/* ===== TIMELINE ===== */}
-      <div className="relative max-w-4xl mx-auto px-6">
-        {/* vertical line */}
-        <div
-          aria-hidden
-          className="
-            absolute left-4 top-0 bottom-0
-            w-px bg-gradient-to-b from-blue-500/40 via-cyan-500/40 to-transparent
-          "
-        />
+      <div className="relative z-10 max-w-6xl mx-auto">
+        {/* ===== HEADER ===== */}
+        <motion.div
+          initial={{ opacity: 0, y: 18 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="max-w-3xl mb-24"
+        >
+          <p className="text-xs uppercase tracking-widest text-neutral-500 mb-4">
+            Experience
+          </p>
+          <h2 className="text-4xl md:text-5xl font-extrabold leading-tight text-neutral-900 dark:text-neutral-100">
+            Real-world experience
+            <span className="block text-neutral-400 dark:text-neutral-600">
+              building, shipping, and maintaining systems.
+            </span>
+          </h2>
+        </motion.div>
 
-        <div className="space-y-16">
+        {/* ===== EXPERIENCE LIST ===== */}
+        <motion.div
+          variants={container}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true }}
+          className="space-y-24"
+        >
           {experiences.map((exp, i) => (
-            <div key={i} className="relative pl-14">
-              {/* dot */}
-              <div
-                aria-hidden
-                className="
-                  absolute left-2 top-6
-                  w-4 h-4 rounded-full
-                  bg-blue-600
-                  ring-4 ring-blue-500/20
-                "
-              />
+            <motion.article
+              key={i}
+              variants={item}
+              className="
+                group relative
+                grid grid-cols-1 md:grid-cols-12 gap-10
+              "
+            >
+              {/* ===== LEFT META ===== */}
+              <div className="md:col-span-4 space-y-4">
+                <div className="text-sm text-neutral-500">{exp.period}</div>
+                <h3 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100">
+                  {exp.company}
+                </h3>
+                <p className="font-medium text-blue-600 dark:text-blue-400">
+                  {exp.role}
+                </p>
+              </div>
 
-              {/* card */}
+              {/* ===== RIGHT CONTENT ===== */}
               <div
                 className="
+                  md:col-span-8
                   rounded-3xl
-                  bg-white/80 dark:bg-gray-900/80
+                  border border-neutral-200/60 dark:border-neutral-800
+                  bg-neutral-50/70 dark:bg-neutral-900/60
                   backdrop-blur-xl
-                  border border-gray-200/50 dark:border-gray-700/50
-                  shadow-xl
-                  p-8
+                  p-10
+                  space-y-8
+                  transition
+                  group-hover:border-blue-500/40
                 "
               >
-                {/* header */}
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-                  <div>
-                    <h3 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-white">
-                      {exp.company}
-                    </h3>
-                    <p className="text-blue-600 dark:text-blue-400 font-semibold">
-                      {exp.role}
-                    </p>
-                  </div>
-                  <span className="text-sm text-gray-500 dark:text-gray-400">
-                    {exp.period}
-                  </span>
-                </div>
-
                 {/* highlights */}
-                <ul className="space-y-3 text-gray-700 dark:text-gray-300 mb-6">
-                  {exp.highlights.map((item, idx) => (
-                    <li key={idx} className="flex gap-3">
-                      <span className="mt-2 w-1.5 h-1.5 rounded-full bg-blue-500 shrink-0" />
-                      <span>{item}</span>
+                <ul className="space-y-4 text-neutral-700 dark:text-neutral-300 leading-relaxed">
+                  {exp.highlights.map((h, idx) => (
+                    <li key={idx} className="flex gap-4">
+                      <span className="mt-2 w-2 h-2 rounded-full bg-blue-500 shrink-0" />
+                      <span>{h}</span>
                     </li>
                   ))}
                 </ul>
 
-                {/* tech stack */}
-                <div className="flex flex-wrap gap-2">
+                {/* tech */}
+                <div className="flex flex-wrap gap-2 pt-2">
                   {exp.tech.map((t, idx) => (
                     <span
                       key={idx}
                       className="
-                        px-3 py-1 text-sm rounded-full
+                        px-3 py-1 text-xs rounded-full
                         bg-blue-100 text-blue-700
                         dark:bg-blue-900/40 dark:text-blue-300
                       "
@@ -150,9 +162,9 @@ export default function Experience() {
                   ))}
                 </div>
               </div>
-            </div>
+            </motion.article>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );
