@@ -39,6 +39,22 @@ const ICON_MAP = {
 
 const PROJECTS = [
   {
+    title: "Teacher Dashboard (Frontend)",
+    description:
+      "Modern and responsive teacher dashboard for managing students and salary reports with monthly filters and PDF export.",
+    tech: ["Next.js", "React", "TypeScript", "Tailwind CSS", "JWT", "jsPDF"],
+    github: "https://github.com/USERNAME/teacher-dashboard-frontend",
+    image: "/images/teacher-dashboard.png",
+  },
+  // {
+  //   title: "Teacher Dashboard (Backend)",
+  //   description:
+  //     "REST API backend for Teacher Dashboard with JWT authentication, multi-tenant student management, and income data processing.",
+  //   tech: ["Node.js", "Express", "PostgreSQL", "JWT", "bcrypt"],
+  //   github: "https://github.com/USERNAME/teacher-dashboard-backend",
+  //   image: "/images/teacher-dashboard-be.png",
+  // },
+  {
     title: "Dashboard Admin",
     description: "Modern admin dashboard with analytics and clean UI.",
     tech: ["React", "TypeScript", "Tailwind CSS", "Material UI"],
