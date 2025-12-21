@@ -43,7 +43,7 @@ const PROJECTS = [
     description:
       "Modern and responsive teacher dashboard for managing students and salary reports with monthly filters and PDF export.",
     tech: ["Next.js", "React", "TypeScript", "Tailwind CSS", "JWT", "jsPDF"],
-    github: "https://github.com/USERNAME/teacher-dashboard-frontend",
+    github: "https://github.com/gvnorln/teacher-dashboard-fe.git",
     image: "/images/teacher-dashboard.png",
   },
   // {
