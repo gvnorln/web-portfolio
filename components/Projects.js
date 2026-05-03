@@ -50,7 +50,7 @@ const PROJECTS = [
       "WhatsApp API",
       "SEO"
     ],
-    github: "https://github.com/gvnorln/teacher-dashboard-fe.git",
+    github: "https://www.cepotblowerbekasi.com/",
     image: "/images/cepot-blower.png",
   },
   {

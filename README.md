@@ -22,7 +22,7 @@ A modern and professional portfolio website featuring **a responsive design, smo
 
 ## 🚀 Live Demo
 
-🔗 [https://your-portfolio-domain.com](https://your-portfolio-domain.com)
+🔗 [https://gvnorln-portfolio.vercel.app] (https://gvnorln-portfolio.vercel.app/)
 
 ## 🛠️ Local Installation
 
