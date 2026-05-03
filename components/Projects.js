@@ -39,6 +39,21 @@ const ICON_MAP = {
 
 const PROJECTS = [
   {
+    title: "Cepot Blower Bekasi",
+    description:
+      "Responsive event equipment rental website with interactive product catalog, floating cart system, dynamic checkout form, WhatsApp order integration, category filtering, testimonials, FAQ, and SEO optimization for lead generation.",
+    tech: [
+      "Next.js",
+      "React",
+      "JavaScript",
+      "Tailwind CSS",
+      "WhatsApp API",
+      "SEO"
+    ],
+    github: "https://github.com/gvnorln/teacher-dashboard-fe.git",
+    image: "/images/cepot-blower.png",
+  },
+  {
     title: "Teacher Dashboard (Frontend)",
     description:
       "Modern and responsive teacher dashboard for managing students and salary reports with monthly filters and PDF export.",
